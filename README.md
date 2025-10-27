@@ -1,36 +1,36 @@
-# **Modelagem estatística de experimentos agrícolas** 
+# **Modelagem estatística de experimentos agrícolas**
 
-**Autora:** [Jennifer Luz Lopes](https://www.linkedin.com/in/jenniferluzlopes)\
-**Linguagem:** R\
-**Pipeline:** [{targets}](https://books.ropensci.org/targets/)\
-**Objetivo:** Portifólio
+A modelagem estatística em experimentos agrícolas tem como objetivo quantificar e compreender a variação presente nos dados experimentais, separando os efeitos genéticos dos efeitos ambientais. Ela é essencial para avaliar o desempenho de genótipos, estimar parâmetros genéticos e identificar materiais superiores com base em critérios de precisão e estabilidade.
 
-------------------------------------------------------------------------
-
-## **Objetivo**
-
-Este repositório demonstra um **fluxo completo de análise de experimentos agrícolas**, desde a **coleta automatizada dos dados via API do GitHub** até a **modelagem estatística reprodutível** com o pacote `{targets}`.
-
-O objetivo é apresentar uma arquitetura moderna de **engenharia de dados aplicada à pesquisa agronômica**, integrando boas práticas de:
-
--   Organização de projetos científicos com R;\
--   Modelagem linear mista (BLUE/BLUP) via `lme4`;\
--   Cálculo de herdabilidade e agrupamento genético (UPGMA);\
--   Exportação automatizada de resultados e figuras.
+Nos delineamentos em blocos como o Alpha-Lattice, usado em experimentos com grande número de genótipos, os modelos lineares mistos (REML/BLUP) tornam-se uma abordagem essencial. Eles permitem estimar, de forma simultânea e imparcial, os efeitos fixos (como repetições e tratamentos) e os efeitos aleatórios (como genótipos ou blocos incompletos).
 
 ------------------------------------------------------------------------
 
-## **Habilidades utilizadas neste projeto**
+## Objetivo
+
+Este repositório apresenta um pipeline completo de análise estatística de experimentos agrícolas, integrando ciência de dados reprodutível e modelagem experimental.\
+A proposta é demonstrar, de forma prática, como estruturar um fluxo automatizado e auditável, desde a coleta dos dados via API do GitHub até a execução de modelos mistos (REML/BLUP) e automação com o pacote `{targets}`.
+
+O foco é construir uma arquitetura aplicada à pesquisa agronômica, adotando princípios de:
+
+-   Organização de projetos com R;
+-   Modelagem (BLUE/BLUP) via `lme4`;
+-   Cálculo de herdabilidade e agrupamento genético (UPGMA);
+-   Escalabilidade com o uso do `{targets}` para atualização seletiva de etapas alteradas.
+
+------------------------------------------------------------------------
+
+## **Hard skills e ferramentas aplicadas neste projeto**
 
 | Categoria | Ferramentas e Tecnologias |
-|------------------|------------------------------------------------------|
+|-------------------|-----------------------------------------------------|
 | **Linguagem** | R |
 | **Modelagem Estatística** | Modelos Lineares Mistos (REML/BLUP), ANOVA, Herdabilidade, Agrupamento Hierárquico (UPGMA) |
-| **Pacotes R Utilizados** | `targets`, `tarchetypes`, `tidyverse`, `lme4`, `emmeans`, `metan`, `broom.mixed`, `ggplot2`, `ggpubr`, `readxl`, `writexl`, `httr2`, `base64enc`, `glue` |
-| **Automação e Engenharia de Dados** | Pipelines reprodutíveis `{targets}`, coleta automatizada de dados via API GitHub (`httr2`, `base64enc`), exportação automática de resultados e gráficos |
-| **Visualização de Dados** | `ggplot2`, `ggpubr` |
-| **Documentação e Estrutura de Projeto** | Organização modular de diretórios (`dados/`, `funcoes/`, `scripts/`, `output/`), comentários padronizados e versionamento com Git/GitHub |
-| **Controle de Versão** | Git e GitHub (commits, branches, push/pull, versionamento de pipeline) |
+| **Pacotes R utilizados** | `targets`, `tarchetypes`, `tidyverse`, `lme4`, `emmeans`, `metan`, `broom.mixed`, `ggplot2`, `ggpubr`, `readxl`, `writexl`, `httr2`, `base64enc`, `glue`, `here` |
+| **Automação de dados** | Pipelines reprodutíveis `{targets}`, coleta automatizada de dados via API GitHub (`httr2`, `base64enc`), exportação automática de resultados e gráficos |
+| **Visualização de dados** | `ggplot2` |
+| **Documentação e estrutura de projeto** | Organização modular de diretórios com (`dados/`, `funcoes/`, `scripts/`, `output/`), com os pacotes `fs` e `here` |
+| **Controle de versão** | Git e GitHub (commits, branches, push/pull, versionamento de pipeline) |
 
 ------------------------------------------------------------------------
 
@@ -58,17 +58,17 @@ portfolio_experimentacao_agricola/
 
 ### **\_targets.R**
 
--   Arquivo principal do pipeline {targets}. Define:
+-   Arquivo principal do pipeline {targets} que define:
 -   pacotes usados;
 -   funções auxiliares (importadas via source());
 -   targets (etapas reprodutíveis), desde a coleta de dados até a exportação final.
--   Cada tar_target() representa uma etapa automatizada do fluxo de análise.
+-   Cada `tar_target()` representa uma etapa automatizada do fluxo de análise.
 
 ### 📁 **\_targets/**
 
 -   Pasta gerada automaticamente pelo `{targets}`.
 
--   Armazena **todo o histórico e metadados** de execução:
+-   Armazena todo o histórico e metadados de execução:
 
 | Subpasta | Função |
 |------------------------------------|------------------------------------|
@@ -104,7 +104,7 @@ portfolio_experimentacao_agricola/
 Contém os scripts de análise modularizada, usados no pipeline.
 
 | Script | Função |
-|----|----|
+|------------------------------------|------------------------------------|
 | **script_inicial.R** | Configura o ambiente, pacotes e estrutura inicial do projeto. |
 | **importacao_via_api.R** | Teste independente da função `coleta_dados_github()`. |
 | **modelagem-experimental.R** | Script central de modelagem: ajustes de variáveis, modelos mistos (BLUE/BLUP), herdabilidade e agrupamento UPGMA. |
@@ -142,8 +142,7 @@ cd portfolio_experimentacao_agricola
 install.packages(c(
   "targets", "tarchetypes", "tidyverse", "lme4", "emmeans", 
   "metan", "ggplot2", "glue", "readxl", "broom.mixed", 
-  "httr2", "base64enc", "ggpubr", "writexl"
-))
+  "httr2", "base64enc", "ggpubr", "writexl"))
 ```
 
 ### 3. Defina seu token GitHub no `.Renviron`
@@ -160,7 +159,7 @@ E adicione:
 GITHUB_TOKEN=seu_token_aqui
 ```
 
-Salve e reinicie o R.
+**Salve e reinicie o R.**
 
 ------------------------------------------------------------------------
 
@@ -186,8 +185,8 @@ list.files("meu_projeto/output", full.names = TRUE)
 
 | Conceito | Descrição |
 |-----------------------------------|-------------------------------------|
-| **BLUE** | Best Linear Unbiased Estimator – efeitos fixos (genótipos tratados como constantes). |
-| **BLUP** | Best Linear Unbiased Predictor – efeitos aleatórios (genótipos como amostra da população). |
+| **BLUE** | Best Linear Unbiased Estimator: efeitos fixos (genótipos tratados como constantes). |
+| **BLUP** | Best Linear Unbiased Predictor: efeitos aleatórios (genótipos como amostra da população). |
 | **Herdabilidade** | Proporção da variância total atribuída a diferenças genéticas. |
 | **UPGMA** | Método de agrupamento hierárquico baseado em distância genética entre genótipos. |
 

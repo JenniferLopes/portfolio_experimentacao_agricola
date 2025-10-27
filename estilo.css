@@ -1,0 +1,186 @@
+/* ===========================================================
+  ESTILO VISUAL - COMUNIDADE DE ESTATÍSTICA
+  Aplicação: Relatórios Quarto (.qmd)
+  Autora: Jennifer Luz Lopes
+=========================================================== */
+
+/* --------------------------- */
+/* 1- TÍTULO, SUBTÍTULO E AUTOR */
+/* --------------------------- */
+
+/* Cabeçalho sem sombra e com logotipo à direita */
+.quarto-title-block,
+.quarto-title-banner,
+.quarto-title-meta {
+  background-color: #224573 !important; /* Azul institucional */
+  color: #ffffff !important;
+  box-shadow: none !important;          /* Remove relevo */
+  background-image: none !important;    /* Remove gradiente */
+  border: none !important;
+  padding: 25px 30px !important;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  position: relative;                   /* Necessário para posicionar o logo */
+}
+
+/* Logotipo flutuante à direita */
+.quarto-title-block::after {
+  content: "";
+  position: absolute;
+  top: 15px;
+  right: 25px;
+  width: 90px;
+  height: 90px;
+  background-image:("imagens/logo.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  opacity: 0.95;
+  transition: all 0.3s ease;
+}
+
+/* Efeito hover no logo */
+.quarto-title-block:hover::after {
+  transform: scale(1.05);
+  opacity: 1;
+}
+
+/* Título principal */
+.quarto-title-block .title {
+  font-size: 1.9em;
+  font-weight: 700;
+  margin-bottom: 5px;
+  color: #ffffff !important;
+}
+
+/* Subtítulo */
+.quarto-title-block .subtitle {
+  font-size: 1.2em;
+  font-weight: 400;
+  color: #d8e2f0 !important;
+  margin-top: 4px;
+}
+
+/* Autor */
+.quarto-title-block .author {
+  font-size: 1em;
+  font-weight: 500;
+  color: #f0f4fa !important;
+  margin-top: 8px;
+}
+
+/* --------------------------- */
+/* 2- BOTÃO “CODE”             */
+/* --------------------------- */
+
+button.code-tools-button,
+.quarto-code-tools .code-tools-button,
+.code-tools-button .btn {
+  color: #ffffff !important;                   /* Texto branco */
+  background-color: transparent !important;    /* Fundo limpo */
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  box-shadow: none !important;                 /* Remove relevo */
+  transition: all 0.3s ease;
+}
+
+/* Hover do botão “Code” */
+button.code-tools-button:hover,
+.code-tools-button .btn:hover {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  transform: scale(1.03);
+}
+
+/* --------------------------- */
+/* 3- LINKS E TEXTO            */
+/* --------------------------- */
+
+a {
+  color: #224573;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #16314f;
+  text-decoration: underline;
+}
+
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #2c2c2c;
+}
+
+/* --------------------------- */
+/* 4- TABELAS INTERATIVAS DT   */
+/* --------------------------- */
+
+div.dt-buttons {
+  text-align: center !important;
+  margin-top: 15px;
+}
+
+table.dataTable thead {
+  background-color: #224573;
+  color: white;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+  color: #224573 !important;
+  border: 1px solid #224573 !important;
+  border-radius: 4px;
+  margin: 2px;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+  background-color: #224573 !important;
+  color: white !important;
+}
+
+/* --------------------------- */
+/* 5- CÓDIGOS E RESULTADOS     */
+/* --------------------------- */
+
+pre code {
+  background-color: #f6f8fa;
+  border-left: 3px solid #224573;
+  padding: 10px;
+  display: block;
+  border-radius: 4px;
+}
+
+/* --------------------------- */
+/* 6- BARRA DE ROLAGEM         */
+/* --------------------------- */
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e8edf3;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #224573;
+  border-radius: 5px;
+  border: 2px solid #e8edf3;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #16314f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* --------------------------- */
+/* 7- JUSTIFICAR TEXTO         */
+/* --------------------------- */
+
+p {
+  text-align: justify;
+  text-justify: inter-word;
+}
