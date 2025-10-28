@@ -1,14 +1,15 @@
 /* ===========================================================
-  ESTILO VISUAL - COMUNIDADE DE ESTATÍSTICA
+  ESTILO VISUAL
   Aplicação: Relatórios Quarto (.qmd)
   Autora: Jennifer Luz Lopes
 =========================================================== */
 
-/* --------------------------- */
-/* 1- TÍTULO, SUBTÍTULO E AUTOR */
-/* --------------------------- */
-
-/* Cabeçalho sem sombra e com logotipo à direita */
+/* ===========================================================
+   1. CABEÇALHO DO DOCUMENTO (Título, Subtítulo e Autor)
+   -------------------------------------------------------
+   Define o estilo do bloco principal de título, adiciona
+   cor institucional e posiciona o logotipo à direita.
+=========================================================== */
 .quarto-title-block,
 .quarto-title-banner,
 .quarto-title-meta {
@@ -21,6 +22,7 @@
   border-radius: 10px;
   margin-bottom: 30px;
   position: relative;                   /* Necessário para posicionar o logo */
+  z-index: 1;                           /* Mantém o cabeçalho atrás do botão Code */
 }
 
 /* Logotipo flutuante à direita */
@@ -31,12 +33,14 @@
   right: 25px;
   width: 90px;
   height: 90px;
-  background-image:("imagens/logo.png");
+  background-image: url("imagens/logo.png"); /* Caminho corrigido */
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   opacity: 0.95;
   transition: all 0.3s ease;
+  pointer-events: none; /* Impede que o logo bloqueie cliques */
+  z-index: 0;           /* Fica atrás do botão Code */
 }
 
 /* Efeito hover no logo */
@@ -69,10 +73,12 @@
   margin-top: 8px;
 }
 
-/* --------------------------- */
-/* 2- BOTÃO “CODE”             */
-/* --------------------------- */
-
+/* ===========================================================
+   2. BOTÃO “CODE” (mostrar/ocultar códigos)
+   -------------------------------------------------------
+   Define aparência e interação do botão que exibe o código
+   nos relatórios Quarto.
+=========================================================== */
 button.code-tools-button,
 .quarto-code-tools .code-tools-button,
 .code-tools-button .btn {
@@ -81,6 +87,8 @@ button.code-tools-button,
   border: 1px solid rgba(255, 255, 255, 0.4) !important;
   box-shadow: none !important;                 /* Remove relevo */
   transition: all 0.3s ease;
+  position: relative;
+  z-index: 2;                                  /* Garante que fique clicável */
 }
 
 /* Hover do botão “Code” */
@@ -90,10 +98,12 @@ button.code-tools-button:hover,
   transform: scale(1.03);
 }
 
-/* --------------------------- */
-/* 3- LINKS E TEXTO            */
-/* --------------------------- */
-
+/* ===========================================================
+   3. LINKS E TEXTO BASE
+   -------------------------------------------------------
+   Define tipografia geral, cores dos links e comportamento
+   ao passar o mouse.
+=========================================================== */
 a {
   color: #224573;
   text-decoration: none;
@@ -110,10 +120,11 @@ body {
   color: #2c2c2c;
 }
 
-/* --------------------------- */
-/* 4- TABELAS INTERATIVAS DT   */
-/* --------------------------- */
-
+/* ===========================================================
+   4. TABELAS INTERATIVAS (DT)
+   -------------------------------------------------------
+   Personaliza DataTables para manter a identidade visual.
+=========================================================== */
 div.dt-buttons {
   text-align: center !important;
   margin-top: 15px;
@@ -136,10 +147,11 @@ table.dataTable thead {
   color: white !important;
 }
 
-/* --------------------------- */
-/* 5- CÓDIGOS E RESULTADOS     */
-/* --------------------------- */
-
+/* ===========================================================
+   5. CÓDIGOS E RESULTADOS
+   -------------------------------------------------------
+   Define o estilo para blocos de código e saídas.
+=========================================================== */
 pre code {
   background-color: #f6f8fa;
   border-left: 3px solid #224573;
@@ -148,10 +160,11 @@ pre code {
   border-radius: 4px;
 }
 
-/* --------------------------- */
-/* 6- BARRA DE ROLAGEM         */
-/* --------------------------- */
-
+/* ===========================================================
+   6. BARRA DE ROLAGEM PERSONALIZADA
+   -------------------------------------------------------
+   Ajusta o estilo visual da scrollbar (navegação suave).
+=========================================================== */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -176,11 +189,29 @@ html {
   scroll-behavior: smooth;
 }
 
-/* --------------------------- */
-/* 7- JUSTIFICAR TEXTO         */
-/* --------------------------- */
-
+/* ===========================================================
+   7. JUSTIFICAR TEXTO
+   -------------------------------------------------------
+   Garante alinhamento de parágrafos para leitura fluida.
+=========================================================== */
 p {
   text-align: justify;
   text-justify: inter-word;
+}
+
+/* ===========================================================
+   8. CABEÇALHO DE NÍVEL 4
+   -------------------------------------------------------
+   Destaca subtítulos com fundo suave e barra lateral.
+=========================================================== */
+h4 {
+  font-weight: 700 !important;   /* Negrito */
+  font-size: 1.05em !important;  /* Levemente maior */
+  color: #224573 !important;     /* Azul institucional */
+  border-left: 4px solid #224573;/* Barra lateral */
+  padding-left: 8px;             /* Espaço entre a barra e o texto */
+  margin-top: 18px;
+  margin-bottom: 10px;
+  background-color: #f2f6fa;     /* Fundo suave */
+  border-radius: 4px;
 }

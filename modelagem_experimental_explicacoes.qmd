@@ -1,6 +1,6 @@
 ---
 title: "Portfólio Experimental – Delineamento Alpha-Lattice"
-subtitle: "Análise de seleção de genótipos superiores"
+subtitle: "Modelagem para seleção de genótipos superiores"
 author: "Jennifer Luz Lopes"
 format:
   html:
@@ -55,7 +55,7 @@ O Personal Access Token (PAT) é uma credencial que substitui sua senha ao usar 
 
 1.  Acesse sua conta GitHub. Entre em github.com com seu usuário e senha.
 
-2.  Abra as configurações do desenvolvedor. No canto superior direito, clique na sua foto de perfil → Settings → Developer Settings → Personal access tokens.
+2.  Abra as configurações do desenvolvedor. No canto superior direito, clique na sua foto de perfil - Settings - Developer Settings - Personal access tokens.
 
 3.  Crie um novo token. Clique em Generate new token (ou Create new token (fine-grained), se disponível).
 
@@ -65,7 +65,7 @@ O Personal Access Token (PAT) é uma credencial que substitui sua senha ao usar 
 
 6.  Escolha uma data de expiração adequada (por exemplo, 90 dias);
 
-7.  Selecione apenas os escopos (permissões) necessários — por exemplo, marque repo para acesso a repositórios.
+7.  Selecione apenas os escopos (permissões) necessários - por exemplo, marque repo para acesso a repositórios.
 
 8.  Gere o token. Clique em Generate token para criar. Importante: copie o valor imediatamente ele não será mostrado novamente.
 
@@ -311,7 +311,7 @@ mod.fg <- lmer(prod ~ gen + rep + (1 | rep:inc.bloco), data = dados)
 $yijk​=μ+gi​+rj​+bk(j)​+εijk$
 
 | Componentes | Descrição |
-|-----------------|-------------------------------------------------------|
+|-------------------|-----------------------------------------------------|
 | $y_{ijk}$ | Observação do rendimento do genótipo (*i*) na repetição (*j*) e bloco incompleto (*k*) |
 | $u$ | Média geral do experimento |
 | $g_i$ | Efeito fixo do genótipo $i = 1, 2, \ldots, G$ |
@@ -404,7 +404,7 @@ mod.rg <- lmer(prod ~ rep + (1 | gen) + (1 | rep:inc.bloco), data = dados)
 $yijk​=μ+rj​+gi​+bk(j)​+εijk$​
 
 | Símbolo | Descrição | Tipo de efeito | Distribuição assumida |
-|--------------|------------------------------|--------------|----------------|
+|----------------|-----------------------|----------------|----------------|
 | $y_{ijk}$ | Valor observado do rendimento do genótipo (*i*) na repetição (*j*) e bloco (*k*) | \- | \- |
 | $u$ | Média geral do experimento | Fixo | \- |
 | $r_j$ | Efeito da repetição (*j*) | Fixo | \- |
@@ -551,7 +551,7 @@ $\hat{g}_j$ é o valor predito para o efeito aleatório do genótipo *j*.
 
 -   IC_inferior e IC_superior - limites inferior e superior do intervalo de confiança.
 
--    Essas estimativas representam o desempenho genético ajustado dos materiais avaliados, já descontando a influência ambiental e dos blocos.
+-   Essas estimativas representam o desempenho genético ajustado dos materiais avaliados, já descontando a influência ambiental e dos blocos.
 
 -   Diferentemente dos BLUEs, os BLUPs permitem predizer o valor genético de genótipos não observados diretamente, sendo, portanto, uma abordagem mais apropriada para a seleção em programas de melhoramento genético de plantas.
 
@@ -652,15 +652,19 @@ Nesta visualização, apresento as estimativas BLUPs (Best Linear Unbiased Predi
 BLUPs <- BLUPs %>%
   arrange(BLUP) %>%
   mutate(gen = factor(gen, levels = gen))
+
+media_geral <- fixef(mod.rg)[1]
 ```
 
 ```{r}
-# Gera o gráfico
 ggplot(BLUPs, aes(x = gen, y = BLUP)) +
   geom_bar(stat = "identity", fill = "#2ca9b7", color = "black", width = 0.7) +
   geom_errorbar(aes(ymin = IC_inferior, ymax = IC_superior), width = 0.2) +
+  geom_hline(yintercept = media_geral, 
+             color = "#E85D04", linetype = "dashed", size = 1)+
   labs(
     title = "Estimativas BLUPs por Genótipo",
+    subtitle = "Linha tracejada indica a média geral ajustada (μ)",
     x = "Genótipos",
     y = "Produtividade (kg/ha)") +
   theme_classic(base_size = 12) +
@@ -671,44 +675,41 @@ ggplot(BLUPs, aes(x = gen, y = BLUP)) +
 
 ## Herdabilidade
 
-Nesta etapa, eu estimei a herdabilidade em sentido amplo (h2h\^2h2) com base nas variâncias obtidas do modelo misto com genótipos como efeito aleatório.
+Nesta etapa, estimei a herdabilidade em sentido amplo $H^2$ com base nas variâncias obtidas do modelo misto com genótipos como efeito aleatório.
 
 ```{r}
-
 vcomps <- as.data.frame(VarCorr(mod.rg))
 vc.g <- vcomps[vcomps$grp == "gen", "vcov"]
 vc.e <- vcomps[vcomps$grp == "Residual", "vcov"]
 
 nreps <- 3
+
 hc <- as.numeric(vc.g / (vc.g + vc.e / nreps))  # <- garante tipo numérico
 
 print(glue::glue("Herdabilidade estimada: {round(hc, 3)}"))
 ```
 
-Utilizei a decomposição da variância fornecida pela função `VarCorr()`, extraindo a variância genética (σg2\sigma\^2_gσg2) associada ao efeito de genótipo e a variância residual (σe2\sigma\^2_eσe2​).\
+Estimei $H^2$ (sentido amplo) a partir dos componentes de variância do modelo misto com genótipos como efeito aleatório. Extraí $σ^2g$ (genótipos) e $σ^2e$​ (resíduo) via `VarCorr()`, e calculei $H^2$ na base de médias por genótipo, considerando r repetições:
 
-A expressão utilizada foi:
-
-$h2=σg2​+rσe2​​σg2​​$
-
-onde rrr representa o número de repetições no delineamento (neste caso, r=3r = 3r=3).
-
-O cálculo foi implementado manualmente a partir das variâncias estimadas pelo modelo (`vc.g` e `vc.e`), permitindo avaliar quanto da variação total observada na produtividade é de origem genética.\
-Valores mais próximos de 1 indicam alta herdabilidade, ou seja, a maior parte da variação entre os genótipos é genética e pode ser transmitida às próximas gerações; valores baixos, ao contrário, sugerem forte influência ambiental e menor eficiência da seleção fenotípica.
-
-Essa estimativa é fundamental para o programa de melhoramento, pois determina o potencial de ganho genético esperado e valida a eficiência do delineamento experimental e da modelagem mista aplicada.
+$H^2 = \frac{\sigma_g^2}{\sigma_g^2 + \frac{\sigma_e^2}{r}}$
 
 ## Agrupamento hierárquico - UPGMA
 
-Nesta etapa, eu realizei o agrupamento hierárquico dos genótipos com base nas estimativas BLUPs de produtividade, utilizando o método UPGMA (Unweighted Pair Group Method with Arithmetic Mean) e a distância euclidiana como medida de dissimilaridade.
+Nesta etapa, realizei o agrupamento hierárquico dos genótipos com base nas estimativas BLUPs de produtividade, utilizando o método UPGMA (Unweighted Pair Group Method with Arithmetic Mean) e a distância euclidiana como medida de dissimilaridade.
 
-O objetivo desse procedimento é avaliar o grau de similaridade genética entre os genótipos e identificar possíveis padrões de agrupamento entre materiais com desempenho produtivo semelhante.\
-Genótipos próximos no dendrograma apresentam valores genéticos preditos semelhantes, enquanto aqueles separados por maiores distâncias euclidianas diferem mais em seu potencial produtivo.
+-   O objetivo desse procedimento é avaliar o grau de similaridade genética entre os genótipos e identificar possíveis padrões de agrupamento entre materiais com desempenho produtivo semelhante.
 
-Neste resultado, observo a formação de três grupos principais, o que indica a presença de variabilidade genética útil à seleção dentro da população avaliada.\
-Essa estrutura de agrupamento pode ser explorada para selecionar genótipos contrastantes, direcionar cruzamentos futuros ou representar a diversidade entre linhagens avançadas.
+-   Genótipos próximos no dendrograma apresentam valores genéticos preditos semelhantes, enquanto aqueles separados por maiores distâncias euclidianas diferem mais em seu potencial produtivo.
 
-O método UPGMA, ao utilizar as estimativas BLUPs, garante que o agrupamento seja baseado na performance genética ajustada e não apenas em médias fenotípicas —, o que torna a análise mais robusta e alinhada ao propósito do melhoramento genético quantitativo.
+-   O dendrograma evidencia a formação de três grupos principais de genótipos, com base na similaridade de seus valores genéticos preditos.
+
+-   O primeiro grupo reúne materiais com desempenho produtivo médio a baixo, enquanto o segundo concentra genótipos com resposta intermediária.
+
+-   O terceiro grupo, mais distante, representa genótipos com maiores valores de BLUP, indicando superioridade genética e potencial para seleção em programas de melhoramento.
+
+-   Essa estrutura de agrupamento pode ser explorada para selecionar genótipos contrastantes, direcionar cruzamentos futuros ou representar a diversidade entre linhagens avançadas.
+
+-   O método UPGMA, ao utilizar as estimativas BLUPs, garante que o agrupamento seja baseado na performance genética ajustada e não apenas em médias fenotípicas -, o que torna a análise mais robusta e alinhada ao propósito do melhoramento genético quantitativo.
 
 ```{r}
 blup_values <- BLUPs$BLUP
@@ -716,22 +717,24 @@ names(blup_values) <- BLUPs$gen
 
 dist_blups <- dist(blup_values, method = "euclidean")
 hc <- hclust(dist_blups, method = "average")
-
-plot(hc, main = "Dendrograma UPGMA - BLUPs",
-     xlab = "Genótipos", ylab = "Distância Euclidiana")
-
-
 ```
 
-### Correlção cofenética
+```{r}
+plot(hc, main = "Dendrograma UPGMA - BLUPs",
+     xlab = "Genótipos", ylab = "Distância Euclidiana")
+```
 
-Após a geração do dendrograma, **eu avaliei a consistência do agrupamento UPGMA** por meio da **correlação cofenética**, que mede o grau de concordância entre a **matriz original de distâncias genéticas** e a **matriz de distâncias representada pelo dendrograma**.
+### Correlação cofenética
 
-A correlação cofenética obtida foi de **0,8943**, o que indica **excelente ajuste** entre os dados originais e a representação hierárquica produzida pelo método UPGMA.\
-Valores próximos de 1 refletem **alta fidelidade** do dendrograma em representar as relações de similaridade entre os genótipos, garantindo **confiabilidade na estrutura de agrupamento** observada.
+Após a geração do dendrograma, eu avaliei a consistência do agrupamento UPGMA por meio da correlação cofenética, que mede o grau de concordância entre a matriz original de distâncias genéticas e a matriz de distâncias representada pelo dendrograma.
 
-Esse resultado confirma que o método de agrupamento adotado foi **estatisticamente adequado** para os dados de BLUPs, permitindo interpretar os grupos formados como **indicativos reais de proximidade genética e desempenho produtivo semelhante**.\
-Assim, a análise de agrupamento, validada pela alta correlação cofenética, **reforça a robustez da modelagem mista e a diversidade genética presente entre os genótipos avaliados**.
+-   A correlação cofenética obtida foi de 0,8943, o que indica excelente ajuste entre os dados originais e a representação hierárquica produzida pelo método UPGMA.
+
+-   Valores próximos de 1 refletem alta fidelidade do dendrograma em representar as relações de similaridade entre os genótipos, garantindo confiabilidade na estrutura de agrupamento observada.
+
+-   Esse resultado confirma que o método de agrupamento adotado foi estatisticamente adequado para os dados de BLUPs, permitindo interpretar os grupos formados como indicativos reais de proximidade genética e desempenho produtivo semelhante.
+
+-   Assim, a análise de agrupamento, validada pela alta correlação cofenética, reforça a robustez da modelagem mista e a diversidade genética presente entre os genótipos avaliados.
 
 ```{r}
 # Correlação cofenética
@@ -745,13 +748,17 @@ print(paste("Correlação cofenética:", round(correlation_cophenetic, 4)))
 ::: panel-tabset
 ## Pipeline
 
-O pipeline desenvolvido neste portfólio consolida um **fluxo completo de análise experimental reprodutível**, desde a **importação automatizada dos dados via API do GitHub** até a **modelagem estatística com delineamento alpha-lattice**, integrando visualizações, estimativas genéticas e validação por agrupamento hierárquico.
+O pipeline desenvolvido neste portfólio consolida um fluxo completo de análise experimental reprodutível, desde a importação automatizada dos dados via API do GitHub até a modelagem estatística com delineamento alpha-lattice, integrando visualizações, estimativas genéticas e validação por agrupamento hierárquico.
 
 ## Modelagem
 
-O projeto demonstrou como o uso de **modelos mistos (REML/BLUP)** amplia a robustez da inferência, separando de forma eficiente os efeitos genéticos e ambientais uma abordagem essencial em experimentos agrícolas com blocos incompletos e grande variabilidade fenotípica. O cálculo da herdabilidade confirmou a **expressiva contribuição genética** para a produtividade, e o agrupamento UPGMA, validado pela **alta correlação cofenética (0,8943)**, evidenciou **consistência estrutural e diversidade genética relevante** na população avaliada.
+As análises realizadas demonstram a eficiência da modelagem mista aplicada ao delineamento alpha-lattice para a avaliação genética de genótipos.
 
-Mais do que resultados estatísticos, o estudo reforça uma metodologia moderna de pesquisa: **automatizada, reprodutível e integrada**. A função `coleta_dados_github()` elimina barreiras operacionais, e o uso de pacotes como `{lme4}`, `{emmeans}`, `{metan}` e `{tidyverse}` cria uma base sólida para análises avançadas e documentação transparente.
+1.  O uso combinado dos modelos BLUE e BLUP permitiu distinguir de forma precisa os efeitos fixos e aleatórios, evidenciando a importância de controlar a variação proveniente de blocos incompletos e repetições.
+
+2.  A estimativa de herdabilidade indicou a proporção da variação total atribuída aos efeitos genéticos, confirmando a adequação do modelo e a confiabilidade dos parâmetros obtidos. Além disso, a análise de agrupamento via UPGMA reforçou a presença de variabilidade genética entre os materiais, o que é essencial para a continuidade do processo seletivo.
+
+3.  De modo geral, a modelagem adotada proporcionou predições mais acuradas do desempenho genético, favorecendo a seleção de genótipos superiores e garantindo reprodutibilidade e transparência nas etapas analíticas aspectos fundamentais em pipelines modernos de melhoramento genético e experimentação agrícola.
 
 ## Recursos recomendados
 
