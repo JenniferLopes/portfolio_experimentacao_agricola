@@ -353,7 +353,7 @@ qqnorm(resid(mod.fg)); qqline(resid(mod.fg))
 
 #### ANOVA para efeitos fixos
 
-Em seguida, foi realizada à análise de variância (ANOVA) para o modelo com genótipos tratados como efeitos fixos, utilizando o método Kenward-Roger para o cálculo dos graus de liberdade (ddf = "Kenward-Roger").
+Em seguida, foi realizada à análise de variância (ANOVA) para o modelo com genótipos tratados como efeitos fixos, utilizando o método Kenward-Roger para o cálculo dos graus de liberdade (ddf = Kenward-Roger).
 
 -   Essa abordagem é mais apropriada em experimentos com número limitado de repetições e estruturas desbalanceadas, pois ajusta a variância dos erros e fornece testes F mais precisos.
 
@@ -495,7 +495,7 @@ A comparação entre os modelos de efeitos fixos (BLUE) e aleatórios (BLUP) foi
 
 ### Estimativas dos BLUEs - Efeito fixo
 
-Nesta etapa, eu obtive as estimativas BLUEs (Best Linear Unbiased Estimates), correspondentes às médias ajustadas dos genótipos considerando o modelo com efeitos fixos.
+Nesta etapa, obtive as estimativas BLUEs (Best Linear Unbiased Estimates), correspondentes às médias ajustadas dos genótipos considerando o modelo com efeitos fixos.
 
 -   Utilizei a função `emmeans()` do pacote `emmeans`, que calcula as médias marginais ajustadas após o controle dos efeitos de repetição e blocos incompletos.
 
@@ -523,26 +523,37 @@ DT::datatable(BLUEs)
 
 ### Estimativas dos BLUPs - Efeito aleatório
 
-Nesta etapa, **eu estimei os BLUPs (Best Linear Unbiased Predictors)** a partir do modelo com **genótipo como efeito aleatório**.\
-Primeiro, extraí a **média geral (**μ\muμ) do modelo por meio da função `fixef(mod.rg)[1]`, que representa o intercepto fixo ou seja, o valor médio da produtividade considerando todos os efeitos ajustados.
+Nesta etapa, estimei os BLUPs (Best Linear Unbiased Predictors) a partir do modelo em que o genótipo foi considerado como efeito aleatório.
 
-Em seguida, utilizei a função `ranef()` para obter os **efeitos aleatórios individuais de cada genótipo**, correspondentes aos desvios em relação à média geral, e combinei essas estimativas com o valor de μ\muμ para calcular o **BLUP de cada genótipo**:
+-   Primeiro, extraí a média geral (\$\\mu\$) do modelo por meio da função `fixef(mod.rg)[1]`, que representa o intercepto fixo, isto é, o valor médio da produtividade ajustado para todos os efeitos incluídos.
 
-BLUPj=μ+g\^j\text{BLUP}\_j = \mu + \hat{g}\_jBLUPj​=μ+g\^​j​
+-   Em seguida, utilizei a função `ranef()` para obter os efeitos aleatórios preditos de cada genótipo, os quais representam os desvios individuais em relação à média geral do experimento.
 
-onde g\^j\hat{g}\_jg\^​j​ é o valor predito para o efeito aleatório do genótipo jjj.
+-   Esses valores correspondem às diferenças genéticas ajustadas, considerando os efeitos de repetição e de blocos incompletos dentro de cada repetição.
 
-Para cada genótipo, também calculei os **intervalos de confiança (95%)**, utilizando o erro-padrão associado à predição.\
-As colunas finais incluem:
+O BLUP de cada genótipo foi calculado somando a média geral ao efeito aleatório estimado:
 
--   `gen`: identificação do genótipo,
+$BLUPj=μ+gj$
 
--   `BLUP`: valor genético predito,
+**onde:**
 
--   `IC_inferior` e `IC_superior`: limites inferior e superior de confiança.
+$u$ : é a média geral ajustada do modelo;
 
--   Essas estimativas representam o **desempenho genético ajustado** dos materiais avaliados, já descontando a influência ambiental e de blocos.\
-    Diferente das BLUEs, os BLUPs permitem **predizer o valor genético de genótipos não avaliados diretamente** e **suportam decisões de seleção**, sendo, portanto, mais adequados ao contexto de **melhoramento genético de plantas**.
+$\hat{g}_j$ é o valor predito para o efeito aleatório do genótipo *j*.
+
+-   Para cada genótipo, também foram calculados intervalos de confiança de 95%, baseados no erro-padrão associado à predição individual. As colunas finais da tabela de resultados incluem:
+
+<!-- -->
+
+-   gen - identificação do genótipo
+
+-   BLUP - valor genético predito ajustado;
+
+-   IC_inferior e IC_superior - limites inferior e superior do intervalo de confiança.
+
+-    Essas estimativas representam o desempenho genético ajustado dos materiais avaliados, já descontando a influência ambiental e dos blocos.
+
+-   Diferentemente dos BLUEs, os BLUPs permitem predizer o valor genético de genótipos não observados diretamente, sendo, portanto, uma abordagem mais apropriada para a seleção em programas de melhoramento genético de plantas.
 
 ```{r}
 mu_manual <- fixef(mod.rg)[1]
@@ -570,71 +581,80 @@ comparacao_long <- comparacao %>%
   pivot_longer(
     cols = c(BLUE, BLUP),
     names_to = "Tipo",
-    values_to = "Estimativa"
-  )
+    values_to = "Estimativa")
 
 # Ordena os genótipos pela média BLUP
 ordem_gen <- comparacao %>%
   arrange(BLUP) %>%
   pull(gen)
 
-comparacao_long$gen <- factor(comparacao_long$gen, levels = ordem_gen)
+comparacao_long$gen <- factor(comparacao_long$gen, 
+                              levels = ordem_gen)
+```
 
-# Gera o gráfico comparativo
+```{r}
+# Gera o gráfico 
 ggplot(comparacao_long, aes(x = gen, y = Estimativa, fill = Tipo)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8), color = "black") +
   geom_errorbar(aes(
-    ymin = ifelse(Tipo == "BLUE", IC_inferior_BLUE, IC_inferior_BLUP),
-    ymax = ifelse(Tipo == "BLUE", IC_superior_BLUE, IC_superior_BLUP)
-  ), position = position_dodge(width = 0.8), width = 0.25) +
+    ymin = ifelse(Tipo == "BLUE", IC_inferior_BLUE, 
+                  IC_inferior_BLUP),
+    ymax = ifelse(Tipo == "BLUE", IC_superior_BLUE,
+                  IC_superior_BLUP)), 
+    position = position_dodge(width = 0.8), width = 0.25) +
   labs(
     title = "Comparação entre BLUEs e BLUPs por Genótipo",
     x = "Genótipos",
-    y = "Estimativas (Produção Ajustada)",
-    fill = "Modelo"
-  ) +
-  theme_minimal(base_size = 12) +
+    y = "Estimativas de produção",
+    fill = "Modelo") +
+  theme_classic(base_size = 12) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(face = "bold", hjust = 0.5)
-  )
-
+    plot.title = element_text(face = "bold", hjust = 0.5))
 ```
 
-Neste gráfico, eu comparo as estimativas BLUEs e BLUPs obtidas para cada genótipo, representando a produtividade ajustada segundo as duas modelagens estatísticas.\
-Os genótipos estão ordenados pela média BLUP, permitindo visualizar a progressão do desempenho genético predito.\
-As barras vermelhas correspondem às BLUEs, provenientes do modelo com efeito fixo de genótipo, enquanto as barras azuis representam as BLUPs, obtidas do modelo com efeito aleatório de genótipo.
+Neste gráfico, comparei as estimativas BLUEs e BLUPs obtidas para cada genótipo, representando a produtividade ajustada segundo as duas modelagens estatísticas.
 
-Ao observar o gráfico, percebo que as BLUEs apresentam maior amplitude e maior variação entre genótipos, refletindo diretamente os valores médios observados no experimento portanto, mais sensíveis à variação fenotípica e ao erro experimental.\
-Já as BLUPs mostram comportamento mais suavizado e estável, pois incorporam a estrutura de variâncias do modelo misto, corrigindo a influência ambiental e priorizando a informação genética predita.
+-   Os genótipos estão ordenados pela média BLUP, permitindo visualizar a progressão do desempenho genético predito.
 
-Essa diferença é esperada:
+-   As barras vermelhas correspondem aos BLUEs, provenientes do modelo com efeito fixo de genótipo, enquanto as barras azuis representam os BLUPs, obtidas do modelo com efeito aleatório de genótipo.
+
+-   Ao observar o gráfico, percebo que os BLUEs apresentam maior amplitude e maior variação entre genótipos, refletindo diretamente os valores médios observados no experimento portanto, mais sensíveis à variação fenotípica e ao erro experimental.
+
+-   Já os BLUPs mostram comportamento mais suavizado e estável, pois incorporam a estrutura de variâncias do modelo misto, corrigindo a influência ambiental e priorizando a informação genética predita.
+
+**Essa diferença é esperada:**
 
 -   Os BLUEs são estimativas descritivas, adequadas para comparar os genótipos avaliados dentro do experimento específico;
 
--   Os BLUPs são preditivas, permitindo inferir sobre o valor genético e realizar seleção com base em mérito genético.
+-   Os BLUPs são preditivos, permitindo inferir sobre o valor genético e realizar seleção com base em mérito genético.
 
--   O gráfico evidencia que, embora ambos os métodos estimem o mesmo fenômeno (produtividade ajustada), eles respondem a objetivos distintos:\
-    as BLUEs detalham o comportamento experimental observado, enquanto as BLUPs fornecem uma visão mais robusta e generalizável essencial em contextos de melhoramento genético e seleção de linhagens promissoras.
+-   O gráfico evidencia que, embora ambos os métodos estimem o mesmo fenômeno (produtividade ajustada), eles respondem a objetivos distintos:
+
+    -   Os BLUEs detalham o comportamento experimental observado, enquanto os BLUPs fornecem uma visão mais generalizada e essencial em contextos de melhoramento genético e seleção de linhagens promissoras.
 
 #### BLUPs preditos
 
-Nesta visualização, eu apresento as estimativas BLUPs (Best Linear Unbiased Predictors) para os genótipos avaliados, já ajustadas pelos efeitos ambientais e de blocos.\
-Os genótipos estão ordenados do menor para o maior valor predito, permitindo observar claramente o gradiente de desempenho genético na população.
+Nesta visualização, apresento as estimativas BLUPs (Best Linear Unbiased Predictors) para os genótipos avaliados, já ajustadas pelos efeitos ambientais e de blocos.
 
-As barras representam a produtividade ajustada (kg/ha), enquanto as linhas verticais indicam os intervalos de confiança (95%), evidenciando a precisão das estimativas individuais.\
-Genótipos com BLUPs mais altos estão acima da média geral (μ\muμ), sendo candidatos preferenciais à seleção, pois apresentam maior mérito genético estimado.\
-Por outro lado, genótipos com BLUPs mais baixos situam-se abaixo da média, refletindo desempenho inferior após o ajuste dos efeitos ambientais.
+-   Os genótipos estão ordenados do menor para o maior valor predito, permitindo observar claramente o gradiente de desempenho genético na população.
 
-Essa abordagem permite distinguir diferenças genéticas reais de variações de ambiente, fornecendo uma base mais sólida para decisões de seleção.\
-Enquanto análises clássicas (como médias de tratamento) descrevem o desempenho observado, o modelo misto e os BLUPs revelam o potencial genético verdadeiro dos genótipos, tornando-se a principal ferramenta de seleção em programas modernos de melhoramento vegetal.
+-   As barras representam a produtividade ajustada (kg/ha), enquanto as linhas verticais indicam os intervalos de confiança (95%), evidenciando a precisão das estimativas individuais.
+
+-   Genótipos com BLUPs mais altos estão acima da média geral $μ$, sendo candidatos preferenciais à seleção, pois apresentam maior mérito genético estimado.
+
+-   Por outro lado, genótipos com BLUPs mais baixos situam-se abaixo da média, refletindo desempenho inferior após o ajuste dos efeitos ambientais.
+
+-   Enquanto análises clássicas (como médias de tratamento) descrevem o desempenho observado, o modelo misto e os BLUPs revelam o potencial genético verdadeiro dos genótipos, tornando-se a principal abordagem de seleção em programas de melhoramento vegetal.
 
 ```{r}
 # Ordena os genótipos pela estimativa BLUP
 BLUPs <- BLUPs %>%
   arrange(BLUP) %>%
   mutate(gen = factor(gen, levels = gen))
+```
 
+```{r}
 # Gera o gráfico
 ggplot(BLUPs, aes(x = gen, y = BLUP)) +
   geom_bar(stat = "identity", fill = "#2ca9b7", color = "black", width = 0.7) +
@@ -642,13 +662,11 @@ ggplot(BLUPs, aes(x = gen, y = BLUP)) +
   labs(
     title = "Estimativas BLUPs por Genótipo",
     x = "Genótipos",
-    y = "Produtividade Ajustada (kg/ha)"
-  ) +
-  theme_minimal(base_size = 12) +
+    y = "Produtividade (kg/ha)") +
+  theme_classic(base_size = 12) +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(face = "bold", hjust = 0.5)
-  )
+    plot.title = element_text(face = "bold", hjust = 0.5))
 ```
 
 ## Herdabilidade
