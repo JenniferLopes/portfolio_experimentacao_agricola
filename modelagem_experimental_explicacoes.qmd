@@ -19,6 +19,16 @@ execute:
   message: false
 ---
 
+::: callout-important
+## Mensagem inicial
+
+Este projeto utiliza dados experimentais simulados, desenvolvidos com o objetivo de reproduzir fielmente a complexidade de um ensaio real de melhoramento genético.\
+
+Foram aplicadas técnicas de estatística experimental, modelagem mista (BLUP/REML) e análises multivariadas para identificar genótipos superiores com base em critérios de desempenho.\
+
+A simulação permitiu validar todo o fluxo de análise, do delineamento ao ranqueamento final, consolidando um cenário realista de tomada de decisão em programas de melhoramento.
+:::
+
 ## Instalação e carregamento dos pacotes
 
 ```{r}
@@ -88,6 +98,8 @@ Criei a função **`coleta_dados_github()`** para automatizar a leitura de arqui
 [^2]: Acesse a documentação de como consumir a [**API do GitHub**](https://docs.github.com/pt/rest/using-the-rest-api/getting-started-with-the-rest-api?apiVersion=2022-11-28).
 
 ::: callout-important
+## Importante
+
 Você precisa acessar o GitHub e gerar um **Token de Acesso Pessoal (PAT -Personal Access Token)**.
 :::
 
@@ -152,7 +164,9 @@ coleta_dados_github <- function(repo, path, branch = "main", token = Sys.getenv(
 }
 ```
 
-## Importação dos dados via API do GitHub
+## Importação dos dados via API do GitHub 
+
+### Para repositórios públicos
 
 Nesta etapa, foi realizada a importação automatizada dos dados diretamente do GitHub, garantindo reprodutibilidade e versionamento do experimento. A função **`coleta_dados_github()`** foi desenvolvida previamente e armazenada no **diretório funcoes/**, sendo responsável por estabelecer a conexão com o repositório público, localizar o arquivo especificado e fazer o download temporário antes de ler o conteúdo com o pacote **`readxl`**.
 
@@ -189,7 +203,7 @@ O modelo estatístico para o delineamento Alpha-Lattice inclui efeitos de tratam
 
 Por isso, ele é amplamente utilizado em programas de melhoramento genético de plantas, onde se avaliam dezenas ou centenas de linhagens experimentais. Além de aumentar a eficiência da comparação entre genótipos, o delineamento Alpha-Lattice viabiliza o uso de componentes de variância e herdabilidade, fornecendo base sólida para a seleção genotípica mais precisa.
 
-## Sobre os dados experimentais
+## Sobre os dados experimentais - Simulados
 
 Os dados analisados neste experimento correspondem a um ensaio de avaliação de genótipos conduzido sob delineamento em blocos incompletos do tipo Alpha-Lattice, com o objetivo de estimar parâmetros genéticos e identificar materiais superiores em termos de produtividade.
 
@@ -211,9 +225,9 @@ Os dados analisados neste experimento correspondem a um ensaio de avaliação de
 
 Neste passo, realizei o ajuste das variáveis categóricas do conjunto de dados para garantir que o modelo estatístico reconheça corretamente os fatores experimentais.
 
-As colunas correspondentes a genótipos (gen), repetições (rep) e blocos incompletos (inc.bloco) são convertidas para o tipo factor, utilizando a função **`mutate()`** do **`dplyr`**.
+-   As colunas correspondentes a genótipos (gen), repetições (rep) e blocos incompletos (inc.bloco) são convertidas para o tipo factor, utilizando a função **`mutate()`** do **`dplyr`**.
 
-Essa conversão é essencial em análises de experimentação agrícola, pois esses efeitos representam níveis de tratamento e estruturas hierárquicas que devem ser tratadas como variáveis qualitativas, e não numéricas.
+-   Essa conversão é essencial em análises de experimentação agrícola, pois esses efeitos representam níveis de tratamento e estruturas hierárquicas que devem ser tratadas como variáveis qualitativas, e não numéricas.
 
 ```{r}
 dados <- dados %>%
@@ -225,12 +239,14 @@ dados <- dados %>%
 
 ## Sobre o experimento
 
+Foram avaliados, 24 genótipos, em 3 repetições, com 6 blocos incompletos.
+
 ```{r}
 resumo <- dados %>%
   summarise(
     n_genotipos   = n_distinct(gen),
     n_repeticoes  = n_distinct(rep),
-    n_blocos_inc      = n_distinct(inc.bloco))
+    n_blocos_inc  = n_distinct(inc.bloco))
 
 print(resumo)
 ```
@@ -239,7 +255,7 @@ print(resumo)
 
 O croqui do experimento, foi representado graficamente no delineamento alpha-lattice. Para isso, utilizei o pacote **`ggplot2`**, mapeando as coordenadas de campo onde cada célula **`geom_tile()`** representa uma unidade experimental e é identificada pelo respectivo genótipo (label = gen).
 
-A coloração das parcelas foi definida pela variável inc.bloco, permitindo destacar visualmente os blocos incompletos. Em seguida, apliquei **`facet_wrap(~ rep)`** para separar as repetições em painéis distintos, o que facilita a inspeção da uniformidade entre blocos dentro de cada repetição.
+-   A coloração das parcelas foi definida pela variável inc.bloco, permitindo destacar visualmente os blocos incompletos. Em seguida, apliquei **`facet_wrap(~ rep)`** para separar as repetições em painéis distintos, o que facilita a inspeção da uniformidade entre blocos dentro de cada repetição.
 
 ```{r}
 
@@ -265,9 +281,16 @@ print(croqui)
 
 ## Análise descritiva
 
-Foi realizada à análise descritiva da variável produtividade (prod), utilizando a função **`desc_stat()`** do pacote **`metan`**. Essa função permite gerar estatísticas resumo como média, mediana, desvio-padrão, coeficiente de variação e amplitude e, quando **`hist = TRUE`**, apresenta o histograma da distribuição dos dados. O argumento **`stats = "main"`** foi utilizado para focar nos indicadores principais, garantindo uma leitura rápida e objetiva das medidas de tendência central e dispersão.
+Foi realizada à análise descritiva da variável produtividade (prod), utilizando a função **`desc_stat()`** do pacote **`metan`**[^4].
+
+[^4]: Acesse a documentação do pacote [**metan: Multi Environment Trials Analysis**](https://cran.r-project.org/web/packages/metan/index.html).
+
+-   Essa função permite gerar estatísticas resumo como média, mediana, desvio-padrão, coeficiente de variação e amplitude e, quando **`hist = TRUE`**, apresenta o histograma da distribuição dos dados.
+
+-   O argumento **`stats = "main"`** foi utilizado para focar nos indicadores principais, garantindo uma leitura rápida e objetiva das medidas de tendência central e dispersão.
 
 ```{r}
+#|warning: false
 descritiva <- dados %>%
   metan::desc_stat(prod, hist = TRUE, stats = "main")
 ```
@@ -294,13 +317,15 @@ DT::datatable(descritiva)
 
 ## Modelagem estatística
 
-Nesta etapa, ajustei dois modelos lineares mistos para avaliar a produtividade dos genótipos no delineamento alpha-lattice, explorando duas abordagens distintas: efeito fixo e efeito aleatório. Essa comparação é essencial para compreender o comportamento da variável de interesse sob diferentes pressupostos de inferência e para decidir qual estratégia oferece estimativas mais adequadas ao objetivo experimental.
+Nesta etapa, ajustei dois modelos lineares mistos para avaliar a produtividade dos genótipos no delineamento alpha-lattice, explorando duas abordagens distintas:
+
+-   Efeito fixo e efeito aleatório. Essa comparação é essencial para compreender o comportamento da variável de interesse sob diferentes pressupostos de inferência e para decidir qual estratégia oferece estimativas mais adequadas ao objetivo experimental.
 
 #### Modelo 1 - Genótipo como efeito fixo (BLUEs)
 
-Essa abordagem gera as Estimativas Lineares Não Viesadas (BLUEs), que representam as médias ajustadas dos genótipos após o controle dos efeitos de repetição e blocos incompletos. Esse tipo de modelagem é apropriado quando o interesse está em comparar diretamente os genótipos avaliados no experimento, sem extrapolar conclusões para um conjunto maior de materiais genéticos. Utilizei a função `anova()` com o método `Kenward–Roger`[^4] para obter o teste de significância dos efeitos fixos. Além disso, avaliei os resíduos e a sua normalidade, a fim de verificar o atendimento aos pressupostos do modelo.
+Essa abordagem gera as Estimativas Lineares Não Viesadas (BLUEs), que representam as médias ajustadas dos genótipos após o controle dos efeitos de repetição e blocos incompletos. Esse tipo de modelagem é apropriado quando o interesse está em comparar diretamente os genótipos avaliados no experimento, sem extrapolar conclusões para um conjunto maior de materiais genéticos. Utilizei a função `anova()` com o método `Kenward–Roger`[^5] para obter o teste de significância dos efeitos fixos. Além disso, avaliei os resíduos e a sua normalidade, a fim de verificar o atendimento aos pressupostos do modelo.
 
-[^4]: Kenward-Roger: [**Artigo completo**](https://www.jstor.org/stable/2533558?origin=crossref).
+[^5]: Kenward-Roger: [**Artigo completo**](https://www.jstor.org/stable/2533558?origin=crossref).
 
 ```{r}
 mod.fg <- lmer(prod ~ gen + rep + (1 | rep:inc.bloco), data = dados)
@@ -311,7 +336,7 @@ mod.fg <- lmer(prod ~ gen + rep + (1 | rep:inc.bloco), data = dados)
 $yijk​=μ+gi​+rj​+bk(j)​+εijk$
 
 | Componentes | Descrição |
-|-------------------|-----------------------------------------------------|
+|--------------------|----------------------------------------------------|
 | $y_{ijk}$ | Observação do rendimento do genótipo (*i*) na repetição (*j*) e bloco incompleto (*k*) |
 | $u$ | Média geral do experimento |
 | $g_i$ | Efeito fixo do genótipo $i = 1, 2, \ldots, G$ |
@@ -357,7 +382,7 @@ Em seguida, foi realizada à análise de variância (ANOVA) para o modelo com ge
 
 -   Essa abordagem é mais apropriada em experimentos com número limitado de repetições e estruturas desbalanceadas, pois ajusta a variância dos erros e fornece testes F mais precisos.
 
--   O objetivo aqui foi avaliar a significância dos efeitos de genótipo, repetição e blocos incompletos sobre a produtividade.
+-   O objetivo aqui, foi avaliar a significância dos efeitos de genótipo, repetição e blocos incompletos sobre a produtividade.
 
 -   Quando o efeito de genótipo é significativo, isso indica que existe variabilidade real entre os materiais avaliados, justificando o prosseguimento da análise com comparações múltiplas e estimativas médias ajustadas (BLUEs).
 
@@ -368,17 +393,19 @@ anova_fg <- anova(mod.fg, ddf = "Kenward-Roger")
 anova_fg
 ```
 
-A tabela da ANOVA com o método de Kenward-Roger apresenta os testes de significância para os efeitos fixos incluídos no modelo.
+A tabela da ANOVA com o método de **Kenward-Roger** apresenta os testes de significância para os efeitos fixos incluídos no modelo.
 
 -   Ao interpretar os resultados, foi possível observar que o efeito de genótipo foi significativo (F=1,93; p=0,03598), indicando que existe variabilidade estatisticamente detectável entre os genótipos avaliados quanto à produtividade.
 
 -   Esse resultado confirma que as diferenças observadas não se devem apenas ao acaso, mas refletem diferenças genéticas reais entre os materiais testados.
 
--   Por outro lado, o efeito de repetição (F=0,02; p=0,88) não foi significativo, o que sugere que as condições experimentais entre as repetições foram homogêneas, sem variações no ambiente.
+-   Por outro lado, o efeito de repetição (F=0,02; p=0,88126) não foi significativo, o que sugere que as condições experimentais entre as repetições foram homogêneas, sem variações no ambiente.
 
 > A significância do fator genótipo valida o uso do modelo misto na sequência da análise, permitindo estimar as médias ajustadas (BLUEs) e, posteriormente, comparar o desempenho dos materiais.
 
 ::: callout-important
+## Importante
+
 A ANOVA Tipo III foi utilizada porque o modelo ajustado não é completamente ortogonal ou seja, os efeitos dos fatores (genótipos, repetições e blocos) não são totalmente independentes. Nesse tipo de modelo, cada termo deve ser avaliado ajustando-se para os demais fatores presentes.
 :::
 
@@ -404,7 +431,7 @@ mod.rg <- lmer(prod ~ rep + (1 | gen) + (1 | rep:inc.bloco), data = dados)
 $yijk​=μ+rj​+gi​+bk(j)​+εijk$​
 
 | Símbolo | Descrição | Tipo de efeito | Distribuição assumida |
-|----------------|-----------------------|----------------|----------------|
+|-----------------|----------------------|-----------------|-----------------|
 | $y_{ijk}$ | Valor observado do rendimento do genótipo (*i*) na repetição (*j*) e bloco (*k*) | \- | \- |
 | $u$ | Média geral do experimento | Fixo | \- |
 | $r_j$ | Efeito da repetição (*j*) | Fixo | \- |
@@ -412,7 +439,7 @@ $yijk​=μ+rj​+gi​+bk(j)​+εijk$​
 | $b_{k(j)}$ | Efeito do bloco incompleto (*k*) dentro da repetição (*j*) | Aleatório | $b_{k(j)} \sim N(0, \sigma^2_b)$ |
 | $\varepsilon_{ijk}$ | Erro aleatório associado à observação | Aleatório | $\varepsilon_{ijk} \sim N(0, \sigma^2_e)$ |
 
-#### Diagnóstico de resíduos
+#### Diagnóstico dos resíduos
 
 Ao analisar o gráfico Resíduos x Ajustados do modelo aleatório (BLUP), foi possível verificar o comportamento dos erros em relação aos valores preditos.
 
@@ -437,13 +464,19 @@ No gráfico Q-Q Plot do modelo aleatório (BLUP), foi avaliado se os resíduos s
 qqnorm(resid(mod.rg)); qqline(resid(mod.rg))
 ```
 
+Pessoal, vou reforçar uma questão que pode surgir:
+
+::: callout-important
+A suposição de normalidade dos resíduos é verificada para avaliar o ajuste e a robustez do modelo, mas não é um pressuposto estritamente necessário para a validade das estimativas obtidas via REML/BLUP. O modelo misto suporta pequenas violações de normalidade, desde que a estrutura de variâncias e covariâncias seja corretamente especificada e os resíduos sejam independentes e homocedásticos.
+:::
+
 #### Teste de significância dos componentes de variância
 
-Nesta etapa, foi realizado o teste de significância dos componentes de variância por meio da função **`ranova()`**[^5], que avalia se os efeitos aleatórios incluídos no modelo contribuem de forma significativa para explicar a variabilidade observada na produtividade.
+Nesta etapa, foi realizado o teste de significância dos componentes de variância por meio da função **`ranova()`**[^6], que avalia se os efeitos aleatórios incluídos no modelo contribuem de forma significativa para explicar a variabilidade observada na produtividade.
 
-[^5]: lmerTest Package: Tests in Linear Mixed Effects Models - [**Artigo completo**](https://www.jstatsoft.org/article/view/v082i13)**.**
+[^6]: lmerTest Package: Tests in Linear Mixed Effects Models - [**Artigo completo**](https://www.jstatsoft.org/article/view/v082i13)**.**
 
--   O procedimento compara o modelo completo com versões reduzidas (sem cada efeito aleatório), utilizando testes de razão de verossimilhança (Likelihood Ratio Test).
+-   O procedimento compara o modelo completo com versões reduzidas (sem cada efeito aleatório), utilizando testes de **razão de verossimilhança (Likelihood Ratio Test)**[^7].
 
 -   Quando o resultado indica que o componente de variância associado ao genótipo é significativo, isso confirma que existe variabilidade genética expressiva na população avaliada, o que justifica a aplicação do modelo misto e a obtenção dos BLUPs para seleção dos melhores materiais.
 
@@ -451,24 +484,34 @@ Nesta etapa, foi realizado o teste de significância dos componentes de variânc
 
 -   A `ranova()` permite validar estatisticamente a estrutura hierárquica do modelo e assegurar que cada efeito aleatório considerado genótipos, blocos e erro, desempenha papel relevante na explicação da variância total, garantindo um modelo parcimonioso e biologicamente coerente com o delineamento do experimento.
 
+[^7]: Likelihood Ratio Tests in Linear Mixed Models with One Variance Component.- [**Artigo**](https://academic.oup.com/jrsssb/article-abstract/66/1/165/7098985?login=false).
+
 ```{r}
 ranova_rg <- ranova(mod.rg)
 ranova_rg
 ```
 
-A análise de variância dos componentes aleatórios, obtida por meio da função `ranova()` (Kuznetsova et al., 2017), permite avaliar a contribuição de cada termo aleatório do modelo para o ajuste global, com base no teste da razão de verossimilhança (LRT).
+```{r}
+datatable(ranova_rg)
+```
+
+A análise de variância dos componentes aleatórios, obtida por meio da função `ranova()`, permite avaliar a contribuição de cada termo aleatório do modelo para o ajuste global, com base no teste da razão de verossimilhança (LRT).
 
 **No modelo ajustado**
 
 $prod∼rep+(1∣gen)+(1∣rep:inc.bloco)$
 
--   Observou-se que o efeito aleatório de genótipos foi significativo (p = 0.0388), indicando que há variação genética real entre os genótipos avaliados, justificando sua manutenção no modelo.
+-   Observou-se que o efeito aleatório de genótipos foi significativo (p = 0.0388), indicando que há variação genética entre os genótipos avaliados, justificando sua manutenção no modelo.
 
--   Por outro lado, o termo blocos incompletos dentro de repetição (`rep:inc.bloco`) não apresentou significância estatística (p = 0.5074), sugerindo que essa fonte de variação não contribui de forma relevante para explicar o rendimento. Nesse caso, a simplificação do modelo, removendo esse termo, resulta em uma estrutura mais parcimoniosa, com melhor ajuste (AIC = 1529.4) e menor complexidade, sem perda de qualidade na predição.
+-   Por outro lado, o termo blocos incompletos dentro de repetição (`rep:inc.bloco`) não apresentou significância estatística (p = 0.5074), sugerindo que essa fonte de variação **não** contribui de forma relevante para explicar o rendimento.
+
+-   Nesse caso, a simplificação do modelo, removendo esse termo, resulta em uma estrutura mais parcimoniosa, com melhor ajuste (AIC = 1529.4) e menor complexidade, sem perda de qualidade na predição.
 
 #### Comparação entre modelos (AIC e LogLik)
 
-Por fim, comparei o desempenho dos dois modelos o de efeito fixo (BLUE) e o de efeito aleatório (BLUP) utilizando os critérios AIC (Akaike Information Criterion) e logLik (logaritmo da verossimilhança).
+Por fim, comparei o desempenho dos dois modelos o de efeito fixo (BLUE) e o de efeito aleatório (BLUP) utilizando os critérios AIC (Akaike Information Criterion)[^8] e logLik (logaritmo da verossimilhança).
+
+[^8]: Critério de [**Akaike**](https://pt.wikipedia.org/wiki/Crit%C3%A9rio_de_informa%C3%A7%C3%A3o_de_Akaike).
 
 -   Esses indicadores permitem avaliar a qualidade de ajuste e a parcimônia dos modelos, isto é, o equilíbrio entre complexidade e capacidade explicativa.
 
@@ -478,14 +521,13 @@ Por fim, comparei o desempenho dos dois modelos o de efeito fixo (BLUE) e o de e
 aic_comp <- data.frame(
   Modelo = c("Efeito Fixo (BLUE)", "Efeito Aleatório (BLUP)"),
   AIC = c(AIC(mod.fg), AIC(mod.rg)),
-  logLik = c(logLik(mod.fg), logLik(mod.rg))
-)
+  logLik = c(logLik(mod.fg), logLik(mod.rg)))
 print(aic_comp)
 ```
 
 A comparação entre os modelos de efeitos fixos (BLUE) e aleatórios (BLUP) foi realizada com base nos critérios Akaike Information Criterion (AIC) e Log-Likelihood (logLik), que medem a qualidade do ajuste do modelo aos dados.
 
--   O modelo com efeitos fixos apresentou um AIC de 1082.70 e logLik = -513.35, enquanto o modelo com efeitos aleatórios resultou em AIC de 1530.94 e logLik = -759.47.
+-   O modelo com efeitos fixos apresentou um AIC de 1106.276 e logLik = -526.1379, enquanto o modelo com efeitos aleatórios resultou em AIC de 1554.834 e logLik = -772.4170.
 
 -   Como valores menores de AIC indicam melhor ajuste e maior parcimônia, conclui-se que o modelo com genótipos tratados como efeitos fixos fornece um ajuste mais adequado para os dados avaliados neste experimento. Isso sugere que a variação entre genótipos foi suficientemente explicada como efeito fixo, sem necessidade de tratá-los como uma amostra aleatória de uma população maior.
 
@@ -497,7 +539,15 @@ A comparação entre os modelos de efeitos fixos (BLUE) e aleatórios (BLUP) foi
 
 Nesta etapa, obtive as estimativas BLUEs (Best Linear Unbiased Estimates), correspondentes às médias ajustadas dos genótipos considerando o modelo com efeitos fixos.
 
--   Utilizei a função `emmeans()` do pacote `emmeans`, que calcula as médias marginais ajustadas após o controle dos efeitos de repetição e blocos incompletos.
+-   Utilizei a função `emmeans()` do pacote `emmeans`[^9], que calcula as médias marginais ajustadas após o controle dos efeitos de repetição e blocos incompletos.
+
+[^9]: emmeans: Estimated Marginal Means, aka Least-Squares Means.- [**Pacote**](https://cran.r-project.org/web/packages/emmeans/index.html).
+
+::: callout-tip
+## Dica
+
+Foi lançada uma nova versão do pacote 29/10/2025. Confira [**aqui**](https://rvlenth.github.io/emmeans/news/index.html), as novas funções!
+:::
 
 **Em seguida, converti o resultado para data frame e selecionei as colunas principais:**
 
@@ -525,7 +575,7 @@ DT::datatable(BLUEs)
 
 Nesta etapa, estimei os BLUPs (Best Linear Unbiased Predictors) a partir do modelo em que o genótipo foi considerado como efeito aleatório.
 
--   Primeiro, extraí a média geral (\$\\mu\$) do modelo por meio da função `fixef(mod.rg)[1]`, que representa o intercepto fixo, isto é, o valor médio da produtividade ajustado para todos os efeitos incluídos.
+-   Primeiro, extraí a média geral $u$ do modelo por meio da função `fixef(mod.rg)[1]`, que representa o intercepto fixo, isto é, o valor médio da produtividade ajustado para todos os efeitos incluídos.
 
 -   Em seguida, utilizei a função `ranef()` para obter os efeitos aleatórios preditos de cada genótipo, os quais representam os desvios individuais em relação à média geral do experimento.
 
@@ -576,7 +626,6 @@ DT::datatable(BLUPs)
 # Junta as estimativas dos dois modelos pelo identificador gen
 comparacao <- full_join(BLUEs, BLUPs, by = "gen", suffix = c("_BLUE", "_BLUP"))
 
-# Reestrutura os dados para formato longo
 comparacao_long <- comparacao %>%
   pivot_longer(
     cols = c(BLUE, BLUP),
@@ -593,7 +642,6 @@ comparacao_long$gen <- factor(comparacao_long$gen,
 ```
 
 ```{r}
-# Gera o gráfico 
 ggplot(comparacao_long, aes(x = gen, y = Estimativa, fill = Tipo)) +
   geom_bar(stat = "identity", position = position_dodge(width = 0.8), color = "black") +
   geom_errorbar(aes(
@@ -657,6 +705,8 @@ media_geral <- fixef(mod.rg)[1]
 ```
 
 ```{r}
+#|wwarning: false
+#|mmessage: false
 ggplot(BLUPs, aes(x = gen, y = BLUP)) +
   geom_bar(stat = "identity", fill = "#2ca9b7", color = "black", width = 0.7) +
   geom_errorbar(aes(ymin = IC_inferior, ymax = IC_superior), width = 0.2) +
@@ -748,7 +798,7 @@ print(paste("Correlação cofenética:", round(correlation_cophenetic, 4)))
 ::: panel-tabset
 ## Pipeline
 
-O pipeline desenvolvido neste portfólio consolida um fluxo completo de análise experimental reprodutível, desde a importação automatizada dos dados via API do GitHub até a modelagem estatística com delineamento alpha-lattice, integrando visualizações, estimativas genéticas e validação por agrupamento hierárquico.
+O pipeline desenvolvido neste portfólio consolida um fluxo completo de análise experimental, desde a importação automatizada dos dados via API do GitHub até a modelagem estatística com delineamento alpha-lattice, integrando visualizações, estimativas genéticas e validação por agrupamento hierárquico.
 
 ## Modelagem
 
@@ -758,7 +808,7 @@ As análises realizadas demonstram a eficiência da modelagem mista aplicada ao 
 
 2.  A estimativa de herdabilidade indicou a proporção da variação total atribuída aos efeitos genéticos, confirmando a adequação do modelo e a confiabilidade dos parâmetros obtidos. Além disso, a análise de agrupamento via UPGMA reforçou a presença de variabilidade genética entre os materiais, o que é essencial para a continuidade do processo seletivo.
 
-3.  De modo geral, a modelagem adotada proporcionou predições mais acuradas do desempenho genético, favorecendo a seleção de genótipos superiores e garantindo reprodutibilidade e transparência nas etapas analíticas aspectos fundamentais em pipelines modernos de melhoramento genético e experimentação agrícola.
+3.  De modo geral, a modelagem adotada proporcionou predições mais acuradas do desempenho genético, favorecendo a seleção de genótipos superiores e garantindo reprodutibilidade e transparência nas etapas analíticas aspectos fundamentais em pipelines de programas de melhoramento genético e experimentação agrícola.
 
 ## Recursos recomendados
 
