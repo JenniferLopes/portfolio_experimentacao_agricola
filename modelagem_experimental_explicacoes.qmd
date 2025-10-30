@@ -1,6 +1,6 @@
 ---
-title: "Portfólio Experimental – Delineamento Alpha-Lattice"
-subtitle: "Modelagem para seleção de genótipos superiores"
+title: "Modelagem para seleção de genótipos superiores"
+subtitle: "Delineamento Experimental Alpha-Lattice"
 author: "Jennifer Luz Lopes"
 format:
   html:

@@ -353,308 +353,144 @@ display: none;
 
 
 <div id="modelagem-estatística-de-experimentos-agrícolas" class="section level1">
-<h1><strong>Modelagem estatística de experimentos
-agrícolas</strong></h1>
-<p><strong>Autora:</strong> <a href="https://www.linkedin.com/in/jenniferluzlopes">Jennifer Luz
-Lopes</a><br />
-<strong>Linguagem:</strong> R<br />
-<strong>Pipeline:</strong> <a href="https://books.ropensci.org/targets/">{targets}</a><br />
-<strong>Objetivo:</strong> Portifólio</p>
-<hr />
-<div id="objetivo" class="section level2">
-<h2><strong>Objetivo</strong></h2>
-<p>Este repositório demonstra um <strong>fluxo completo de análise de
-experimentos agrícolas</strong>, desde a <strong>coleta automatizada dos
-dados via API do GitHub</strong> até a <strong>modelagem estatística
-reprodutível</strong> com o pacote <code>{targets}</code>.</p>
-<p>O objetivo é apresentar uma arquitetura moderna de <strong>engenharia
-de dados aplicada à pesquisa agronômica</strong>, integrando boas
-práticas de:</p>
-<ul>
-<li>Organização de projetos científicos com R;<br />
-</li>
-<li>Modelagem linear mista (BLUE/BLUP) via <code>lme4</code>;<br />
-</li>
-<li>Cálculo de herdabilidade e agrupamento genético (UPGMA);<br />
-</li>
-<li>Exportação automatizada de resultados e figuras.</li>
-</ul>
-<hr />
+<h1>Modelagem Estatística de Experimentos Agrícolas</h1>
+<div id="introdução" class="section level3">
+<h3>1. Introdução</h3>
+<p>A modelagem estatística em experimentos agrícolas tem como objetivo
+quantificar e compreender a variação experimental, separando os efeitos
+genéticos dos ambientais.<br />
+Ela é essencial para avaliar o desempenho de genótipos, estimar
+parâmetros genéticos e identificar materiais superiores com base em
+precisão e estabilidade experimental.</p>
+<p>Nos delineamentos em blocos como o Alpha-Lattice, utilizados em
+ensaios com grande número de genótipos, os modelos lineares mistos
+(REML/BLUP) tornam-se fundamentais.<br />
+Essa abordagem permite estimar simultaneamente os efeitos fixos (como
+repetições e tratamentos) e os efeitos aleatórios (como genótipos ou
+blocos incompletos), garantindo predições mais acuradas e
+imparciais.</p>
 </div>
-<div id="habilidades-utilizadas-neste-projeto" class="section level2">
-<h2><strong>Habilidades utilizadas neste projeto</strong></h2>
+<div id="objetivo" class="section level3">
+<h3>2. Objetivo</h3>
+<p>Este projeto apresenta um exemplo completo de modelagem estatística
+aplicada à experimentação agrícola, abordando desde o ajuste do modelo
+até a interpretação dos resultados.</p>
+<p>A proposta é demonstrar, de forma prática e reprodutível, como
+aplicar modelos mistos (REML/BLUP) a dados experimentais obtidos de
+delineamentos do tipo Alpha-Lattice, com foco em:</p>
+<ul>
+<li>Estruturação e organização de projetos no R;<br />
+</li>
+<li>Ajuste de modelos (BLUE/BLUP) com o pacote lme4;<br />
+</li>
+<li>Estimativa de herdabilidade;<br />
+</li>
+<li>Análise de agrupamento genético (UPGMA);<br />
+</li>
+<li>Interpretação de resultados em contexto de melhoramento genético de
+plantas.</li>
+</ul>
+</div>
+<div id="stacks-desenvolvidas" class="section level3">
+<h3>3. Stacks desenvolvidas</h3>
 <table>
 <colgroup>
-<col width="25%" />
-<col width="75%" />
+<col width="31%" />
+<col width="68%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th>Categoria</th>
-<th>Ferramentas e Tecnologias</th>
+<th>Ferramentas / Tecnologias</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>Linguagem</strong></td>
+<td>Linguagem</td>
 <td>R</td>
 </tr>
 <tr class="even">
-<td><strong>Modelagem Estatística</strong></td>
+<td>Modelagem Estatística</td>
 <td>Modelos Lineares Mistos (REML/BLUP), ANOVA, Herdabilidade,
 Agrupamento Hierárquico (UPGMA)</td>
 </tr>
 <tr class="odd">
-<td><strong>Pacotes R Utilizados</strong></td>
-<td><code>targets</code>, <code>tarchetypes</code>,
-<code>tidyverse</code>, <code>lme4</code>, <code>emmeans</code>,
-<code>metan</code>, <code>broom.mixed</code>, <code>ggplot2</code>,
-<code>ggpubr</code>, <code>readxl</code>, <code>writexl</code>,
-<code>httr2</code>, <code>base64enc</code>, <code>glue</code></td>
+<td>Pacotes R Utilizados</td>
+<td>lme4, emmeans, metan, broom.mixed, ggplot2, ggpubr, readxl, writexl,
+tidyverse, glue, here</td>
 </tr>
 <tr class="even">
-<td><strong>Automação e Engenharia de Dados</strong></td>
-<td>Pipelines reprodutíveis <code>{targets}</code>, coleta automatizada
-de dados via API GitHub (<code>httr2</code>, <code>base64enc</code>),
-exportação automática de resultados e gráficos</td>
+<td>Visualização de Dados</td>
+<td>ggplot2</td>
 </tr>
 <tr class="odd">
-<td><strong>Visualização de Dados</strong></td>
-<td><code>ggplot2</code>, <code>ggpubr</code></td>
+<td>Documentação e Estrutura de Projeto</td>
+<td>Organização modular (dados/, funcoes/, scripts/, output/)</td>
 </tr>
 <tr class="even">
-<td><strong>Documentação e Estrutura de Projeto</strong></td>
-<td>Organização modular de diretórios (<code>dados/</code>,
-<code>funcoes/</code>, <code>scripts/</code>, <code>output/</code>),
-comentários padronizados e versionamento com Git/GitHub</td>
-</tr>
-<tr class="odd">
-<td><strong>Controle de Versão</strong></td>
-<td>Git e GitHub (commits, branches, push/pull, versionamento de
-pipeline)</td>
+<td>Controle de Versão</td>
+<td>Git e GitHub (commits, branches, versionamento)</td>
 </tr>
 </tbody>
 </table>
-<hr />
 </div>
-<div id="estrutura-do-projeto" class="section level2">
-<h2><strong>Estrutura do Projeto</strong></h2>
+<div id="estrutura-do-projeto" class="section level3">
+<h3>4. Estrutura do Projeto</h3>
+<p>Faça o mesmo, consulte a estrutura do seu projeto:</p>
+<p><code>{r} # fs::dir_tree(here::here())</code></p>
 <pre><code>portfolio_experimentacao_agricola/
-├── _targets.R                  # Pipeline reprodutível principal
-├── _targets/                   # Metadados e objetos salvos (.rds)
-│   ├── meta/                   # Dependências e status
-│   ├── objects/                # Resultados dos targets
-│   ├── user/
-│   └── workspaces/
-├── meu_projeto/
-│   ├── dados/                  # Dados experimentais (.xlsx)
-│   ├── funcoes/                # Funções auxiliares
-│   ├── output/                 # Saídas automáticas (.xlsx, .png)
-│   ├── scripts/                # Scripts individuais
-│   ├── docs/                   # Relatórios e apresentações (futuro)
-│   ├── figuras/                # Gráficos fixos
-│   ├── equipe/                 # Informações da equipe/autoria
-│   └── README.md
-└── README.md                   # Documento principal do projeto</code></pre>
-<div id="targets.r" class="section level3">
-<h3><strong>_targets.R</strong></h3>
-<ul>
-<li>Arquivo principal do pipeline {targets}. Define:</li>
-<li>pacotes usados;</li>
-<li>funções auxiliares (importadas via source());</li>
-<li>targets (etapas reprodutíveis), desde a coleta de dados até a
-exportação final.</li>
-<li>Cada tar_target() representa uma etapa automatizada do fluxo de
-análise.</li>
-</ul>
+├── estilo.css                               # Estilo visual aplicado aos relatórios Quarto (.qmd)
+├── meu_projeto/                             # Diretório principal do estudo experimental
+│   ├── dados/                               # Base de dados originais (.xlsx, .csv)
+│   ├── docs/                                # Espaço reservado para relatórios e apresentações 
+│   ├── figuras/                             # Figuras e gráficos complementares
+│   ├── funcoes/                             # Funções auxiliares customizadas
+│   │   └── coleta_dados_github.R            # Função para importar dados diretamente do GitHub (API)
+│   ├── output/                              # Saídas geradas automaticamente (tabelas, gráficos)
+│   └── scripts/                             # Scripts organizados por etapas de análise
+│       ├── importacao_via_api.R             # Importação e validação de dados experimentais
+│       ├── modelagem-experimental.R         # Modelagem estatística (BLUE/BLUP, herdabilidade)
+│       └── script_inicial.R                 # Configuração do ambiente e carregamento de pacotes
+├── modelagem_experimental_explicacoes.qmd   # Documento Quarto com explicações e interpretação
+└── README.md                                # Documento principal do projeto (descrição técnica)</code></pre>
 </div>
-<div id="targets" class="section level3">
-<h3>📁 <strong>_targets/</strong></h3>
-<ul>
-<li><p>Pasta gerada automaticamente pelo
-<code>{targets}</code>.</p></li>
-<li><p>Armazena <strong>todo o histórico e metadados</strong> de
-execução:</p></li>
-</ul>
+<div id="scripts-principais" class="section level3">
+<h3>5. Scripts Principais</h3>
 <table>
 <colgroup>
-<col width="50%" />
-<col width="50%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Subpasta</th>
-<th>Função</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>meta/</strong></td>
-<td>Dependências, status e hash de cada target. Permite reexecutar só o
-que foi modificado.</td>
-</tr>
-<tr class="even">
-<td><strong>objects/</strong></td>
-<td>Contém os resultados salvos (objetos <code>.rds</code>) de cada
-target.</td>
-</tr>
-<tr class="odd">
-<td><strong>user/</strong></td>
-<td>Informações sobre o ambiente de execução e logs.</td>
-</tr>
-<tr class="even">
-<td><strong>workspaces/</strong></td>
-<td>Ambientes de sessão salvos para depuração
-(<code>tar_workspace()</code>).</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="meu_projeto" class="section level3">
-<h3><strong>📁 meu_projeto/</strong></h3>
-<ul>
-<li>Diretório de trabalho principal, com subpastas padronizadas para
-organização reprodutível.</li>
-</ul>
-</div>
-<div id="dados" class="section level3">
-<h3><strong>📂 dados/</strong></h3>
-<ul>
-<li>Contém os arquivos de entrada originais, como planilhas
-experimentais (.xlsx, .csv). Exemplo: alpha_lattice.xlsx com dados de
-rendimento e genótipos.</li>
-</ul>
-</div>
-<div id="funcoes" class="section level3">
-<h3><strong>📂 funcoes/</strong></h3>
-<ul>
-<li><p>Armazena funções personalizadas reutilizáveis. Exemplo:</p></li>
-<li><p><strong><code>coleta_dados_github.R:</code></strong> função para
-buscar dados diretamente via API do GitHub, decodificando arquivos .xlsx
-em Base64. Permite integração automatizada e segura com repositórios de
-dados.</p></li>
-</ul>
-</div>
-<div id="output" class="section level3">
-<h3><strong>📂 output/</strong></h3>
-<ul>
-<li><p>Destino dos resultados processados - tabelas, gráficos e
-relatórios. Exemplo:</p></li>
-<li><p>resultados_experimentais.xlsx: estimativas BLUE/BLUP e
-herdabilidade.</p></li>
-<li><p>grafico_BLUE_BLUP.png: correlação entre efeitos fixos e
-aleatórios.</p></li>
-</ul>
-</div>
-<div id="scripts" class="section level3">
-<h3><strong>📂 scripts/</strong></h3>
-<p>Contém os scripts de análise modularizada, usados no pipeline.</p>
-<table>
-<colgroup>
-<col width="50%" />
-<col width="50%" />
+<col width="34%" />
+<col width="65%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th>Script</th>
-<th>Função</th>
+<th>Função Principal</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>script_inicial.R</strong></td>
-<td>Configura o ambiente, pacotes e estrutura inicial do projeto.</td>
+<td>script_inicial.R</td>
+<td>Configuração do ambiente, pacotes e diretórios.</td>
 </tr>
 <tr class="even">
-<td><strong>importacao_via_api.R</strong></td>
-<td>Teste independente da função
-<code>coleta_dados_github()</code>.</td>
+<td>modelagem_experimental_explicacoes.qmd</td>
+<td>Ajuste dos modelos (BLUE e BLUP), estimativas genéticas,
+herdabilidade e agrupamento.</td>
 </tr>
 <tr class="odd">
-<td><strong>modelagem-experimental.R</strong></td>
-<td>Script central de modelagem: ajustes de variáveis, modelos mistos
-(BLUE/BLUP), herdabilidade e agrupamento UPGMA.</td>
-</tr>
-<tr class="even">
-<td><strong>rodar_pipeline.R</strong></td>
-<td>Executa o pipeline completo via <code>tar_make()</code>. Facilita a
-automação.</td>
-</tr>
-<tr class="odd">
-<td><strong>_targets.yaml</strong></td>
-<td>Arquivo auxiliar gerado pelo <code>{targets}</code> para controle
-interno (não precisa editar).</td>
+<td>importacao_via_api.R</td>
+<td>Importação de dados diretamente do GitHub.</td>
 </tr>
 </tbody>
 </table>
-</div>
-<div id="docs" class="section level3">
-<h3><strong>📂 docs/</strong></h3>
-<ul>
-<li><p>Reservada para relatórios e apresentações futuras - como
-documentos .qmd ou .html gerados via Quarto.</p></li>
-<li><p>Pode abrigar o relatório técnico do experimento ou dashboards de
-acompanhamento.</p></li>
-</ul>
-</div>
-<div id="figuras" class="section level3">
-<h3><strong>📂 figuras/</strong></h3>
-<ul>
-<li>Armazena imagens estáticas ou figuras adicionais não geradas
-automaticamente pelo pipeline (ex: logotipos, fluxogramas,
-ilustrações).</li>
-</ul>
-</div>
-<div id="equipe" class="section level3">
-<h3>📂 equipe/</h3>
-<ul>
-<li>Pasta opcional para metadados de autoria - pode conter arquivos .md
-com descrições da equipe, papéis e contatos.</li>
-</ul>
 <hr />
 </div>
-</div>
-<div id="instalação-e-configuração" class="section level2">
-<h2><strong>Instalação e Configuração</strong></h2>
-<div id="clone-o-repositório" class="section level3">
-<h3>1. Clone o repositório</h3>
-<pre class="bash"><code>git clone https://github.com/JenniferLopes/portfolio_experimentacao_agricola.git
-cd portfolio_experimentacao_agricola</code></pre>
-</div>
-<div id="configure-o-ambiente-no-r" class="section level3">
-<h3>2. Configure o ambiente no R</h3>
-<pre class="r"><code>install.packages(c(
-  &quot;targets&quot;, &quot;tarchetypes&quot;, &quot;tidyverse&quot;, &quot;lme4&quot;, &quot;emmeans&quot;, 
-  &quot;metan&quot;, &quot;ggplot2&quot;, &quot;glue&quot;, &quot;readxl&quot;, &quot;broom.mixed&quot;, 
-  &quot;httr2&quot;, &quot;base64enc&quot;, &quot;ggpubr&quot;, &quot;writexl&quot;
-))</code></pre>
-</div>
-<div id="defina-seu-token-github-no-.renviron" class="section level3">
-<h3>3. Defina seu token GitHub no <code>.Renviron</code></h3>
-<p>Abra o arquivo:</p>
-<pre class="r"><code>usethis::edit_r_environ()</code></pre>
-<p>E adicione:</p>
-<pre><code>GITHUB_TOKEN=seu_token_aqui</code></pre>
-<p>Salve e reinicie o R.</p>
-<hr />
-</div>
-</div>
-<div id="execução-do-pipeline" class="section level2">
-<h2><strong>Execução do Pipeline</strong></h2>
-<p>Rode o pipeline completo:</p>
-<pre class="r"><code>library(targets)
-tar_make()</code></pre>
-<p>Verifique os resultados:</p>
-<pre class="r"><code>tar_read(resumo_final)
-list.files(&quot;meu_projeto/output&quot;, full.names = TRUE)</code></pre>
-<hr />
-</div>
-<div id="principais-conceitos" class="section level2">
-<h2><strong>Principais Conceitos</strong></h2>
+<div id="conceitos-principais" class="section level3">
+<h3>6. Conceitos principais</h3>
 <table>
 <colgroup>
-<col width="48%" />
-<col width="51%" />
+<col width="47%" />
+<col width="52%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -664,48 +500,41 @@ list.files(&quot;meu_projeto/output&quot;, full.names = TRUE)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td><strong>BLUE</strong></td>
-<td>Best Linear Unbiased Estimator – efeitos fixos (genótipos tratados
-como constantes).</td>
+<td>BLUE</td>
+<td>Best Linear Unbiased Estimator -estimador dos efeitos fixos.</td>
 </tr>
 <tr class="even">
-<td><strong>BLUP</strong></td>
-<td>Best Linear Unbiased Predictor – efeitos aleatórios (genótipos como
-amostra da população).</td>
+<td>BLUP</td>
+<td>Best Linear Unbiased Predictor - preditor dos efeitos aleatórios
+(valores genéticos).</td>
 </tr>
 <tr class="odd">
-<td><strong>Herdabilidade</strong></td>
-<td>Proporção da variância total atribuída a diferenças genéticas.</td>
+<td>Herdabilidade (H²)</td>
+<td>Proporção da variância total explicada por diferenças
+genéticas.</td>
 </tr>
 <tr class="even">
-<td><strong>UPGMA</strong></td>
-<td>Método de agrupamento hierárquico baseado em distância genética
+<td>UPGMA</td>
+<td>Método de agrupamento hierárquico baseado na distância genética
 entre genótipos.</td>
 </tr>
 </tbody>
 </table>
-<hr />
 </div>
-<div id="reprodutibilidade-com-targets" class="section level2">
-<h2><strong>Reprodutibilidade com <code>{targets}</code></strong></h2>
-<p>Cada etapa da análise é tratada como um <strong>target
-reprodutível</strong>, garantindo:</p>
-<ul>
-<li><p>Reexecução apenas de etapas modificadas;</p></li>
-<li><p>Rastreamento automático de dependências;</p></li>
-<li><p>Integração simples com APIs e relatórios.</p></li>
-</ul>
-<p><strong>Exemplo de encadeamento:</strong></p>
-<pre><code>dados_brutos - dados - modelo_BLUP - estimativas - herdabilidade - exportar_resultados</code></pre>
-<hr />
+<div id="licença" class="section level3">
+<h3>7. Licença</h3>
+<p>Este projeto é distribuído sob a licença MIT.</p>
+<blockquote>
+<p>Sinta-se à vontade para usar, adaptar e referenciar este conteúdo em
+trabalhos e cursos de experimentação agrícola.</p>
+</blockquote>
 </div>
-<div id="licença" class="section level2">
-<h2><strong>Licença</strong></h2>
-<ul>
-<li><p>Este projeto é distribuído sob a licença MIT.</p></li>
-<li><p>Sinta-se à vontade para usar, adaptar e compartilhar com
-atribuição.</p></li>
-</ul>
+<div id="autoria" class="section level3">
+<h3>8. Autoria</h3>
+<p>Jennifer Luz Lopes<br />
+Engenheira Agrônoma | Doutora em Melhoramento Genético de Plantas<br />
+<a href="https://www.linkedin.com/in/jennifer-luz-lopes/">LinkedIn</a> |
+<a href="https://github.com/JenniferLopes">GitHub</a></p>
 </div>
 </div>
 
