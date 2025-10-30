@@ -1,26 +1,26 @@
 /* ===========================================================
-  ESTILO VISUAL
-  Aplicação: Relatórios Quarto (.qmd)
-  Autora: Jennifer Luz Lopes
+   ESTILO VISUAL – RELATÓRIOS QUARTO (.qmd)
+   Autora: Jennifer Luz Lopes
 =========================================================== */
 
+
 /* ===========================================================
-   1. CABEÇALHO DO DOCUMENTO (Título, Subtítulo e Autor)
-   -------------------------------------------------------
-   Define o estilo do bloco principal de título, adiciona
-   cor institucional e posiciona o logotipo à direita.
+   1. CABEÇALHO DO DOCUMENTO
+   -----------------------------------------------------------
+   Define o estilo do bloco principal de título, adicionando
+   cor institucional, tipografia e o logotipo.
 =========================================================== */
 .quarto-title-block,
 .quarto-title-banner,
 .quarto-title-meta {
   background-color: #224573 !important; /* Azul institucional */
-  color: #ffffff !important;
-  box-shadow: none !important;          /* Remove relevo */
-  background-image: none !important;    /* Remove gradiente */
-  border: none !important;
+  color: #ffffff !important;            /* Texto branco */
   padding: 25px 30px !important;
   border-radius: 10px;
   margin-bottom: 30px;
+  border: none !important;
+  box-shadow: none !important;
+  background-image: none !important;
   position: relative;                   /* Necessário para posicionar o logo */
   z-index: 1;                           /* Mantém o cabeçalho atrás do botão Code */
 }
@@ -33,17 +33,17 @@
   right: 25px;
   width: 90px;
   height: 90px;
-  background-image: url("imagens/logo.png"); /* Caminho corrigido */
+  background-image: url("imagens/logo.png");
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
   opacity: 0.95;
   transition: all 0.3s ease;
-  pointer-events: none; /* Impede que o logo bloqueie cliques */
-  z-index: 0;           /* Fica atrás do botão Code */
+  pointer-events: none;  /* Evita interferência em cliques */
+  z-index: 0;            /* Fica atrás do botão Code */
 }
 
-/* Efeito hover no logo */
+/* Efeito de destaque ao passar o mouse */
 .quarto-title-block:hover::after {
   transform: scale(1.05);
   opacity: 1;
@@ -53,8 +53,8 @@
 .quarto-title-block .title {
   font-size: 1.9em;
   font-weight: 700;
-  margin-bottom: 5px;
   color: #ffffff !important;
+  margin-bottom: 5px;
 }
 
 /* Subtítulo */
@@ -73,37 +73,43 @@
   margin-top: 8px;
 }
 
+
 /* ===========================================================
-   2. BOTÃO “CODE” (mostrar/ocultar códigos)
-   -------------------------------------------------------
-   Define aparência e interação do botão que exibe o código
-   nos relatórios Quarto.
+   2. BOTÃO “CODE” (Mostrar/Ocultar códigos)
+   -----------------------------------------------------------
+   Personaliza o botão que exibe o código nos relatórios Quarto.
 =========================================================== */
 button.code-tools-button,
 .quarto-code-tools .code-tools-button,
 .code-tools-button .btn {
-  color: #ffffff !important;                   /* Texto branco */
-  background-color: transparent !important;    /* Fundo limpo */
+  color: #ffffff !important;
+  background-color: transparent !important;
   border: 1px solid rgba(255, 255, 255, 0.4) !important;
-  box-shadow: none !important;                 /* Remove relevo */
+  box-shadow: none !important;
   transition: all 0.3s ease;
   position: relative;
-  z-index: 2;                                  /* Garante que fique clicável */
+  z-index: 2;  /* Mantém o botão clicável acima do cabeçalho */
 }
 
-/* Hover do botão “Code” */
+/* Efeito hover do botão */
 button.code-tools-button:hover,
 .code-tools-button .btn:hover {
   background-color: rgba(255, 255, 255, 0.2) !important;
   transform: scale(1.03);
 }
 
+
 /* ===========================================================
-   3. LINKS E TEXTO BASE
-   -------------------------------------------------------
-   Define tipografia geral, cores dos links e comportamento
-   ao passar o mouse.
+   3. LINKS E TIPOGRAFIA BASE
+   -----------------------------------------------------------
+   Define o padrão visual dos textos e links do relatório.
 =========================================================== */
+body {
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+  color: #2c2c2c;
+}
+
 a {
   color: #224573;
   text-decoration: none;
@@ -114,15 +120,10 @@ a:hover {
   text-decoration: underline;
 }
 
-body {
-  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.6;
-  color: #2c2c2c;
-}
 
 /* ===========================================================
    4. TABELAS INTERATIVAS (DT)
-   -------------------------------------------------------
+   -----------------------------------------------------------
    Personaliza DataTables para manter a identidade visual.
 =========================================================== */
 div.dt-buttons {
@@ -147,10 +148,11 @@ table.dataTable thead {
   color: white !important;
 }
 
+
 /* ===========================================================
-   5. CÓDIGOS E RESULTADOS
-   -------------------------------------------------------
-   Define o estilo para blocos de código e saídas.
+   5. BLOCOS DE CÓDIGO E RESULTADOS
+   -----------------------------------------------------------
+   Ajusta o estilo de visualização dos códigos e saídas.
 =========================================================== */
 pre code {
   background-color: #f6f8fa;
@@ -160,10 +162,11 @@ pre code {
   border-radius: 4px;
 }
 
+
 /* ===========================================================
    6. BARRA DE ROLAGEM PERSONALIZADA
-   -------------------------------------------------------
-   Ajusta o estilo visual da scrollbar (navegação suave).
+   -----------------------------------------------------------
+   Melhora a estética da scrollbar para navegação suave.
 =========================================================== */
 ::-webkit-scrollbar {
   width: 10px;
@@ -189,29 +192,30 @@ html {
   scroll-behavior: smooth;
 }
 
+
 /* ===========================================================
-   7. JUSTIFICAR TEXTO
-   -------------------------------------------------------
-   Garante alinhamento de parágrafos para leitura fluida.
+   7. JUSTIFICATIVA DE TEXTO
+   -----------------------------------------------------------
 =========================================================== */
 p {
   text-align: justify;
   text-justify: inter-word;
 }
 
+
 /* ===========================================================
-   8. CABEÇALHO DE NÍVEL 4
-   -------------------------------------------------------
-   Destaca subtítulos com fundo suave e barra lateral.
+   8. TÍTULOS DE NÍVEL 4 (h4)
+   -----------------------------------------------------------
+   Destaca subtítulos com barra lateral e fundo suave.
 =========================================================== */
 h4 {
-  font-weight: 700 !important;   /* Negrito */
-  font-size: 1.05em !important;  /* Levemente maior */
-  color: #224573 !important;     /* Azul institucional */
-  border-left: 4px solid #224573;/* Barra lateral */
-  padding-left: 8px;             /* Espaço entre a barra e o texto */
+  font-weight: 700 !important;
+  font-size: 1.05em !important;
+  color: #224573 !important;
+  border-left: 4px solid #224573;
+  padding-left: 8px;
   margin-top: 18px;
   margin-bottom: 10px;
-  background-color: #f2f6fa;     /* Fundo suave */
+  background-color: #f2f6fa;
   border-radius: 4px;
 }

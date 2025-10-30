@@ -164,7 +164,7 @@ coleta_dados_github <- function(repo, path, branch = "main", token = Sys.getenv(
 }
 ```
 
-## Importação dos dados via API do GitHub 
+## Importação dos dados via API do GitHub
 
 ### Para repositórios públicos
 
@@ -336,7 +336,7 @@ mod.fg <- lmer(prod ~ gen + rep + (1 | rep:inc.bloco), data = dados)
 $yijk​=μ+gi​+rj​+bk(j)​+εijk$
 
 | Componentes | Descrição |
-|--------------------|----------------------------------------------------|
+|----|----|
 | $y_{ijk}$ | Observação do rendimento do genótipo (*i*) na repetição (*j*) e bloco incompleto (*k*) |
 | $u$ | Média geral do experimento |
 | $g_i$ | Efeito fixo do genótipo $i = 1, 2, \ldots, G$ |
@@ -431,7 +431,7 @@ mod.rg <- lmer(prod ~ rep + (1 | gen) + (1 | rep:inc.bloco), data = dados)
 $yijk​=μ+rj​+gi​+bk(j)​+εijk$​
 
 | Símbolo | Descrição | Tipo de efeito | Distribuição assumida |
-|-----------------|----------------------|-----------------|-----------------|
+|----|----|----|----|
 | $y_{ijk}$ | Valor observado do rendimento do genótipo (*i*) na repetição (*j*) e bloco (*k*) | \- | \- |
 | $u$ | Média geral do experimento | Fixo | \- |
 | $r_j$ | Efeito da repetição (*j*) | Fixo | \- |
@@ -813,7 +813,7 @@ As análises realizadas demonstram a eficiência da modelagem mista aplicada ao 
 ## Recursos recomendados
 
 | Pacote \| Recurso | Descrição | Link |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | **{httr2}** | Pacote moderno para consumo de APIs REST no R. Permite autenticação, controle de headers e tratamento seguro de respostas HTTP. | [httr2.r-lib.org](https://httr2.r-lib.org/articles/wrapping-apis.html) |
 | **GitHub API (REST)** | Interface oficial para acessar dados do GitHub (arquivos, repositórios, commits, issues) via requisições autenticadas. | [docs.github.com/rest](https://docs.github.com/rest/guides/getting-started-with-the-rest-api) |
 | **{gh}** | Cliente R oficial para a API do GitHub. Facilita automações e integrações entre R e repositórios GitHub. | [r-lib.github.io/gh](https://r-lib.github.io/gh/) |
