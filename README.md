@@ -1,5 +1,39 @@
 ## Modelagem Estatística de Experimentos Agrícolas
 
+### Como usar esse projeto?
+
+**Para explorar este projeto, faça:**
+
+1.  Um fork ou clone do repositório em sua máquina local.
+
+2.  Em seguida, acesse o relatório completo com as explicações detalhadas de cada etapa da análise em:\
+    🔗 <https://jenniferlopes.quarto.pub/modelagem_experimental/>
+
+3.  Utilize os scripts disponíveis em `meu_projeto/scripts/` para reproduzir toda a pipeline, desde a importação de dados via API até a modelagem com os modelos mistos (REML/BLUP) e a seleção dos genótipos superiores.
+
+4.   Os dados simulados (`alpha_lattice.xlsx`) estão disponíveis em `meu_projeto/dados/`, permitindo que você execute o fluxo completo de análise e compreenda cada etapa da modelagem experimental aplicada.
+
+5.  Instale os pacotes necessários
+
+```{r}
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+
+pacman::p_load(
+  tidyverse, metan, lme4, lmerTest, broom.mixed,
+  emmeans, multcomp, plotly, writexl, readxl, httr2)
+```
+
+6.  Execute os scripts principais
+
+```{r}
+# Função de coleta de dados via API do GitHub
+source("meu_projeto/funcoes/coleta_dados_github.R")
+
+# Pipeline de modelagem experimental
+source("meu_projeto/scripts/modelagem-experimental.R")
+
+```
+
 ### Introdução
 
 A modelagem estatística em experimentos agrícolas tem como objetivo quantificar e compreender a variação experimental, separando os efeitos genéticos dos ambientais.\
@@ -41,26 +75,26 @@ Faça o mesmo, consulte a estrutura do seu projeto:
 
 ```         
 portfolio_experimentacao_agricola/
-├── estilo.css
-├── _publish.yml
-├── README.md
-├── modelagem_experimental_explicacoes.qmd
+├── estilo.css                          # Estilos visuais do 
+├── _publish.yml                        # Configuração de publicação
+├── README.md                           # Descrição do projeto
+├── modelagem_experimental_explicacoes.qmd  # Documento principal
 │
 ├── meu_projeto/
 │   ├── dados/
-│   │   └── alpha_lattice.xlsx
+│   │   └── alpha_lattice.xlsx          # Dados simulados
 │   │
-│   ├── figuras/
+│   ├── figuras/                        # Gráficos e saídas visuais
 │   │
 │   ├── funcoes/
-│   │   └── coleta_dados_github.R
+│   │   └── coleta_dados_github.R       # Função para importar dados
 │   │
-│   ├── output/
+│   ├── output/                         # Resultados e tabelas finais
 │   │
 │   └── scripts/
-│       ├── importacao_via_api.R
-│       ├── modelagem-experimental.R
-│       └── script_inicial.R
+│       ├── importacao_via_api.R        # Script de coleta e limpeza 
+│       ├── modelagem-experimental.R    # Ajuste dos modelos mistos
+│       └── script_inicial.R            # Pipeline base do projeto
 ```
 
 ### Scripts Principais

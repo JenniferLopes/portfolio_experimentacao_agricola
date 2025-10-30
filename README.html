@@ -352,10 +352,43 @@ display: none;
 </div>
 
 
-<div id="modelagem-estatística-de-experimentos-agrícolas" class="section level1">
-<h1>Modelagem Estatística de Experimentos Agrícolas</h1>
+<div id="modelagem-estatística-de-experimentos-agrícolas" class="section level2">
+<h2>Modelagem Estatística de Experimentos Agrícolas</h2>
+<div id="como-usar-esse-projeto" class="section level3">
+<h3>Como usar esse projeto?</h3>
+<p><strong>Para explorar este projeto, faça:</strong></p>
+<ol style="list-style-type: decimal">
+<li><p>Um fork ou clone do repositório em sua máquina local.</p></li>
+<li><p>Em seguida, acesse o relatório completo com as explicações
+detalhadas de cada etapa da análise em:<br />
+🔗 <a href="https://jenniferlopes.quarto.pub/modelagem_experimental/" class="uri">https://jenniferlopes.quarto.pub/modelagem_experimental/</a></p></li>
+<li><p>Utilize os scripts disponíveis em
+<code>meu_projeto/scripts/</code> para reproduzir toda a pipeline, desde
+a importação de dados via API até a modelagem com os modelos mistos
+(REML/BLUP) e a seleção dos genótipos superiores.</p></li>
+<li><p>Os dados simulados (<code>alpha_lattice.xlsx</code>) estão
+disponíveis em <code>meu_projeto/dados/</code>, permitindo que você
+execute o fluxo completo de análise e compreenda cada etapa da modelagem
+experimental aplicada.</p></li>
+<li><p>Instale os pacotes necessários</p></li>
+</ol>
+<p>```{r} if (!requireNamespace(“pacman”, quietly = TRUE))
+install.packages(“pacman”)</p>
+<p>pacman::p_load( tidyverse, metan, lme4, lmerTest, broom.mixed,
+emmeans, multcomp, plotly, writexl, readxl, httr2)</p>
+<pre><code>
+6.  Execute os scripts principais
+
+```{r}
+# Função de coleta de dados via API do GitHub
+source(&quot;meu_projeto/funcoes/coleta_dados_github.R&quot;)
+
+# Pipeline de modelagem experimental
+source(&quot;meu_projeto/scripts/modelagem-experimental.R&quot;)
+</code></pre>
+</div>
 <div id="introdução" class="section level3">
-<h3>1. Introdução</h3>
+<h3>Introdução</h3>
 <p>A modelagem estatística em experimentos agrícolas tem como objetivo
 quantificar e compreender a variação experimental, separando os efeitos
 genéticos dos ambientais.<br />
@@ -371,7 +404,7 @@ blocos incompletos), garantindo predições mais acuradas e
 imparciais.</p>
 </div>
 <div id="objetivo" class="section level3">
-<h3>2. Objetivo</h3>
+<h3>Objetivo</h3>
 <p>Este projeto apresenta um exemplo completo de modelagem estatística
 aplicada à experimentação agrícola, abordando desde o ajuste do modelo
 até a interpretação dos resultados.</p>
@@ -392,16 +425,16 @@ plantas.</li>
 </ul>
 </div>
 <div id="stacks-desenvolvidas" class="section level3">
-<h3>3. Stacks desenvolvidas</h3>
+<h3>Stacks desenvolvidas</h3>
 <table>
 <colgroup>
-<col width="31%" />
-<col width="68%" />
+<col width="32%" />
+<col width="67%" />
 </colgroup>
 <thead>
 <tr class="header">
 <th>Categoria</th>
-<th>Ferramentas / Tecnologias</th>
+<th>Ferramentas</th>
 </tr>
 </thead>
 <tbody>
@@ -416,8 +449,8 @@ Agrupamento Hierárquico (UPGMA)</td>
 </tr>
 <tr class="odd">
 <td>Pacotes R Utilizados</td>
-<td>lme4, emmeans, metan, broom.mixed, ggplot2, ggpubr, readxl, writexl,
-tidyverse, glue, here</td>
+<td>lme4, emmeans, metan, broom.mixed, ggplot2, readxl, writexl,
+tidyverse, glue</td>
 </tr>
 <tr class="even">
 <td>Visualização de Dados</td>
@@ -425,7 +458,8 @@ tidyverse, glue, here</td>
 </tr>
 <tr class="odd">
 <td>Documentação e Estrutura de Projeto</td>
-<td>Organização modular (dados/, funcoes/, scripts/, output/)</td>
+<td>Organização modular (dados/, funcoes/, scripts/, output/) -Pacotes
+fs e here</td>
 </tr>
 <tr class="even">
 <td>Controle de Versão</td>
@@ -435,27 +469,33 @@ tidyverse, glue, here</td>
 </table>
 </div>
 <div id="estrutura-do-projeto" class="section level3">
-<h3>4. Estrutura do Projeto</h3>
+<h3>Estrutura do Projeto</h3>
 <p>Faça o mesmo, consulte a estrutura do seu projeto:</p>
 <p><code>{r} # fs::dir_tree(here::here())</code></p>
 <pre><code>portfolio_experimentacao_agricola/
-├── estilo.css                               # Estilo visual aplicado aos relatórios Quarto (.qmd)
-├── meu_projeto/                             # Diretório principal do estudo experimental
-│   ├── dados/                               # Base de dados originais (.xlsx, .csv)
-│   ├── docs/                                # Espaço reservado para relatórios e apresentações 
-│   ├── figuras/                             # Figuras e gráficos complementares
-│   ├── funcoes/                             # Funções auxiliares customizadas
-│   │   └── coleta_dados_github.R            # Função para importar dados diretamente do GitHub (API)
-│   ├── output/                              # Saídas geradas automaticamente (tabelas, gráficos)
-│   └── scripts/                             # Scripts organizados por etapas de análise
-│       ├── importacao_via_api.R             # Importação e validação de dados experimentais
-│       ├── modelagem-experimental.R         # Modelagem estatística (BLUE/BLUP, herdabilidade)
-│       └── script_inicial.R                 # Configuração do ambiente e carregamento de pacotes
-├── modelagem_experimental_explicacoes.qmd   # Documento Quarto com explicações e interpretação
-└── README.md                                # Documento principal do projeto (descrição técnica)</code></pre>
+├── estilo.css                          # Estilos visuais do 
+├── _publish.yml                        # Configuração de publicação
+├── README.md                           # Descrição do projeto
+├── modelagem_experimental_explicacoes.qmd  # Documento principal
+│
+├── meu_projeto/
+│   ├── dados/
+│   │   └── alpha_lattice.xlsx          # Dados simulados
+│   │
+│   ├── figuras/                        # Gráficos e saídas visuais
+│   │
+│   ├── funcoes/
+│   │   └── coleta_dados_github.R       # Função para importar dados
+│   │
+│   ├── output/                         # Resultados e tabelas finais
+│   │
+│   └── scripts/
+│       ├── importacao_via_api.R        # Script de coleta e limpeza 
+│       ├── modelagem-experimental.R    # Ajuste dos modelos mistos
+│       └── script_inicial.R            # Pipeline base do projeto</code></pre>
 </div>
 <div id="scripts-principais" class="section level3">
-<h3>5. Scripts Principais</h3>
+<h3>Scripts Principais</h3>
 <table>
 <colgroup>
 <col width="34%" />
@@ -483,14 +523,29 @@ herdabilidade e agrupamento.</td>
 </tr>
 </tbody>
 </table>
-<hr />
+</div>
+<div id="importação-de-dados-via-api-do-github" class="section level3">
+<h3>Importação de dados via API do GitHub</h3>
+<p>A importação dos dados via API do GitHub foi implementada para
+permitir que o projeto acesse arquivos diretamente de um repositório
+remoto, sem a necessidade de download manual.</p>
+<ul>
+<li><p>Essa abordagem garante reprodutibilidade, integração contínua e
+centralização dos dados experimentais, facilitando a atualização e o
+versionamento das bases utilizadas nas análises.</p></li>
+<li><p>Por meio da função <code>coleta_dados_github()</code>, o R
+realiza uma requisição HTTP à API do GitHub, decodifica o conteúdo em
+formato Base64 e lê o arquivo (.csv ou .xlsx) diretamente na sessão,
+utilizando os pacotes <code>httr2</code>, <code>base64enc</code>,
+<code>readr</code> e <code>readxl</code>.</p></li>
+</ul>
 </div>
 <div id="conceitos-principais" class="section level3">
-<h3>6. Conceitos principais</h3>
+<h3>Conceitos principais</h3>
 <table>
 <colgroup>
-<col width="47%" />
-<col width="52%" />
+<col width="48%" />
+<col width="51%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -522,7 +577,7 @@ entre genótipos.</td>
 </table>
 </div>
 <div id="licença" class="section level3">
-<h3>7. Licença</h3>
+<h3>Licença</h3>
 <p>Este projeto é distribuído sob a licença MIT.</p>
 <blockquote>
 <p>Sinta-se à vontade para usar, adaptar e referenciar este conteúdo em
@@ -530,11 +585,12 @@ trabalhos e cursos de experimentação agrícola.</p>
 </blockquote>
 </div>
 <div id="autoria" class="section level3">
-<h3>8. Autoria</h3>
+<h3>Autoria</h3>
 <p>Jennifer Luz Lopes<br />
 Engenheira Agrônoma | Doutora em Melhoramento Genético de Plantas<br />
 <a href="https://www.linkedin.com/in/jennifer-luz-lopes/">LinkedIn</a> |
-<a href="https://github.com/JenniferLopes">GitHub</a></p>
+<a href="https://github.com/JenniferLopes">GitHub</a> | <a href="https://jenniferlopes.quarto.pub/portifolio/">Site e
+Newsletter</a></p>
 </div>
 </div>
 
