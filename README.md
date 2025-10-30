@@ -23,7 +23,7 @@ A proposta é demonstrar, de forma prática e reprodutível, como aplicar modelo
 ### Stacks desenvolvidas
 
 | Categoria | Ferramentas |
-|-----------------------|-------------------------------------------------|
+|-----------------------|------------------------------------------------|
 | Linguagem | R |
 | Modelagem Estatística | Modelos Lineares Mistos (REML/BLUP), ANOVA, Herdabilidade, Agrupamento Hierárquico (UPGMA) |
 | Pacotes R Utilizados | lme4, emmeans, metan, broom.mixed, ggplot2, readxl, writexl, tidyverse, glue |
@@ -41,26 +41,32 @@ Faça o mesmo, consulte a estrutura do seu projeto:
 
 ```         
 portfolio_experimentacao_agricola/
-├── estilo.css                               # Estilo visual aplicado aos relatórios Quarto (.qmd)
-├── meu_projeto/                             # Diretório principal do estudo experimental
-│   ├── dados/                               # Base de dados originais (.xlsx, .csv)
-│   ├── docs/                                # Espaço reservado para relatórios e apresentações 
-│   ├── figuras/                             # Figuras e gráficos complementares
-│   ├── funcoes/                             # Funções auxiliares customizadas
-│   │   └── coleta_dados_github.R            # Função para importar dados diretamente do GitHub (API)
-│   ├── output/                              # Saídas geradas automaticamente (tabelas, gráficos)
-│   └── scripts/                             # Scripts organizados por etapas de análise
-│       ├── importacao_via_api.R             # Importação e validação de dados experimentais
-│       ├── modelagem-experimental.R         # Modelagem estatística (BLUE/BLUP, herdabilidade)
-│       └── script_inicial.R                 # Configuração do ambiente e carregamento de pacotes
-├── modelagem_experimental_explicacoes.qmd   # Documento Quarto com explicações e interpretação
-└── README.md                                # Documento principal do projeto (descrição técnica)
+├── estilo.css
+├── _publish.yml
+├── README.md
+├── modelagem_experimental_explicacoes.qmd
+│
+├── meu_projeto/
+│   ├── dados/
+│   │   └── alpha_lattice.xlsx
+│   │
+│   ├── figuras/
+│   │
+│   ├── funcoes/
+│   │   └── coleta_dados_github.R
+│   │
+│   ├── output/
+│   │
+│   └── scripts/
+│       ├── importacao_via_api.R
+│       ├── modelagem-experimental.R
+│       └── script_inicial.R
 ```
 
 ### Scripts Principais
 
 | Script | Função Principal |
-|-------------------------|------------------------------------------------|
+|-------------------------|-----------------------------------------------|
 | script_inicial.R | Configuração do ambiente, pacotes e diretórios. |
 | modelagem_experimental_explicacoes.qmd | Ajuste dos modelos (BLUE e BLUP), estimativas genéticas, herdabilidade e agrupamento. |
 | importacao_via_api.R | Importação de dados diretamente do GitHub. |
@@ -76,7 +82,7 @@ A importação dos dados via API do GitHub foi implementada para permitir que o 
 ### Conceitos principais
 
 | Conceito | Descrição |
-|----------------------------------|-------------------------------------|
+|-----------------------------------|-------------------------------------|
 | BLUE | Best Linear Unbiased Estimator -estimador dos efeitos fixos. |
 | BLUP | Best Linear Unbiased Predictor - preditor dos efeitos aleatórios (valores genéticos). |
 | Herdabilidade (H²) | Proporção da variância total explicada por diferenças genéticas. |
