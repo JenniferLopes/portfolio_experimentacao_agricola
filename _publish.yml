@@ -1,0 +1,4 @@
+- source: modelagem_experimental_explicacoes.qmd
+  quarto-pub:
+    - id: 54ade154-e06a-48e5-bc58-2d960cfa34de
+      url: https://jenniferlopes.quarto.pub/modelagem_experimental
