@@ -92,4 +92,4 @@ Este projeto é distribuído sob a licença MIT.
 
 Jennifer Luz Lopes\
 Engenheira Agrônoma \| Doutora em Melhoramento Genético de Plantas\
-[LinkedIn](https://www.linkedin.com/in/jennifer-luz-lopes/) \| [GitHub](https://github.com/JenniferLopes)
+[LinkedIn](https://www.linkedin.com/in/jennifer-luz-lopes/) \| [GitHub](https://github.com/JenniferLopes) \| [Site e Newsletter](https://jenniferlopes.quarto.pub/portifolio/)
