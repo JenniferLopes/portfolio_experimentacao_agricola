@@ -1,6 +1,24 @@
 # Modelagem Estatística de Experimentos Agrícolas
 
-### Como usar este projeto?
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![R](https://img.shields.io/badge/R-4.0+-blue.svg)](https://www.r-project.org/)
+[![Quarto](https://img.shields.io/badge/Quarto-1.0+-75AADB.svg)](https://quarto.org/)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
+
+## 📋 Índice
+
+- [Como usar este projeto](#como-usar-este-projeto)
+- [Introdução](#introdução)
+- [Objetivo](#objetivo)
+- [Stacks desenvolvidas](#stacks-desenvolvidas)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Scripts Principais](#scripts-principais)
+- [Conceitos Principais](#conceitos-principais)
+- [Como Contribuir](#como-contribuir)
+- [Licença](#licença)
+- [Autoria](#autoria)
+
+## 🚀 Como usar este projeto?
 
 **Para explorar este projeto, faça:**
 
@@ -15,7 +33,7 @@
 
 5.  Instale os pacotes necessários
 
-```{r}
+```r
 if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
 
 pacman::p_load(
@@ -25,7 +43,7 @@ pacman::p_load(
 
 6.  Execute os scripts principais
 
-```{r}
+```r
 # Função de coleta de dados via API do GitHub
 source("meu_projeto/funcoes/coleta_dados_github.R")
 
@@ -34,7 +52,7 @@ source("meu_projeto/scripts/modelagem-experimental.R")
 
 ```
 
-### Introdução
+## 📖 Introdução
 
 A modelagem estatística em experimentos agrícolas tem como objetivo quantificar e compreender a variação experimental, separando os efeitos genéticos dos ambientais.\
 Ela é essencial para avaliar o desempenho de genótipos, estimar parâmetros genéticos e identificar materiais superiores com base em precisão e estabilidade experimental.
@@ -42,7 +60,7 @@ Ela é essencial para avaliar o desempenho de genótipos, estimar parâmetros ge
 Nos delineamentos em blocos como o Alpha-Lattice, utilizados em ensaios com grande número de genótipos, os modelos lineares mistos (REML/BLUP) tornam-se fundamentais.\
 Essa abordagem permite estimar simultaneamente os efeitos fixos (como repetições e tratamentos) e os efeitos aleatórios (como genótipos ou blocos incompletos), garantindo predições mais acuradas e imparciais.
 
-### Objetivo
+## 🎯 Objetivo
 
 Este projeto apresenta um exemplo completo de modelagem estatística aplicada à experimentação agrícola, abordando desde o ajuste do modelo até a interpretação dos resultados.
 
@@ -122,13 +140,23 @@ A importação dos dados via API do GitHub foi implementada para permitir que o 
 | Herdabilidade (H²) | Proporção da variância total explicada por diferenças genéticas. |
 | UPGMA | Método de agrupamento hierárquico baseado na distância genética entre genótipos. |
 
-### Licença
+## 🤝 Como Contribuir
 
-Este projeto é distribuído sob a licença MIT.
+Contribuições são bem-vindas! Por favor, leia o [Guia de Contribuição](CONTRIBUTING.md) para mais informações sobre como contribuir com este projeto.
+
+Você pode contribuir de várias formas:
+- 🐛 Reportando bugs
+- 💡 Sugerindo novas features
+- 📝 Melhorando a documentação
+- 🔧 Submetendo pull requests
+
+## 📄 Licença
+
+Este projeto é distribuído sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 > Sinta-se à vontade para usar, adaptar e referenciar este conteúdo em trabalhos e cursos de experimentação agrícola.
 
-### Autoria
+## ✨ Autoria
 
 Jennifer Luz Lopes\
 Engenheira Agrônoma \| Doutora em Melhoramento Genético de Plantas
