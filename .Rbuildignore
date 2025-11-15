@@ -1,0 +1,13 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^\.git$
+^\.github$
+^\.gitignore$
+^README\.html$
+^\.httr-oauth$
+^\.Rhistory$
+^\.RData$
+^.*_cache$
+^.*_files$
+^_site$
+^\.quarto$

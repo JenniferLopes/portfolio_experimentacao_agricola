@@ -1,6 +1,6 @@
-## Modelagem Estatística de Experimentos Agrícolas
+# Modelagem Estatística de Experimentos Agrícolas
 
-### Como usar esse projeto?
+### Como usar este projeto?
 
 **Para explorar este projeto, faça:**
 
