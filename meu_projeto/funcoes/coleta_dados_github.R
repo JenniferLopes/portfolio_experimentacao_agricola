@@ -1,6 +1,21 @@
 # ============================================================
 # Função: coleta_dados_github()
 # Objetivo: Ler dados (csv/xlsx) direto da API do GitHub
+# 
+# Parâmetros:
+#   @param repo Nome do repositório no formato "usuario/repositorio"
+#   @param path Caminho do arquivo dentro do repositório
+#   @param branch Nome da branch (padrão: "main")
+#   @param token Token de autenticação do GitHub (padrão: variável de ambiente GITHUB_TOKEN)
+#
+# Retorna:
+#   @return Um data frame com os dados do arquivo
+#
+# Exemplos:
+#   dados <- coleta_dados_github(
+#     repo = "usuario/meu-repo",
+#     path = "dados/arquivo.xlsx"
+#   )
 # ============================================================
 
 coleta_dados_github <- function(repo, path, branch = "main", token = Sys.getenv("GITHUB_TOKEN")) {

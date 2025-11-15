@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "Se você usar este projeto, por favor cite-o conforme abaixo."
+type: software
+title: "Modelagem Estatística de Experimentos Agrícolas"
+authors:
+  - family-names: "Lopes"
+    given-names: "Jennifer Luz"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+repository-code: "https://github.com/JenniferLopes/portfolio_experimentacao_agricola"
+url: "https://jenniferlopes.quarto.pub/modelagem_experimental/"
+abstract: >-
+  Este projeto apresenta um exemplo completo de modelagem estatística 
+  aplicada à experimentação agrícola, abordando desde o ajuste do modelo 
+  até a interpretação dos resultados. Demonstra, de forma prática e 
+  reprodutível, como aplicar modelos mistos (REML/BLUP) a dados 
+  experimentais obtidos de delineamentos do tipo Alpha-Lattice.
+keywords:
+  - "experimentação agrícola"
+  - "modelos mistos"
+  - "REML"
+  - "BLUP"
+  - "alpha-lattice"
+  - "melhoramento genético"
+  - "R"
+license: MIT

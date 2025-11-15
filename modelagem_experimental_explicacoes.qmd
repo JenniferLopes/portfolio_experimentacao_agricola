@@ -217,7 +217,7 @@ Os dados analisados neste experimento correspondem a um ensaio de avaliação de
 
 -   blocos incompletos (inc.bloco);
 
--   Além das coordenadas de campo utilizadas para a construção do croqui experimental, col (clouna) e row (linha);
+-   Além das coordenadas de campo utilizadas para a construção do croqui experimental, col (coluna) e row (linha);
 
 -   Cada repetição foi subdividida em blocos menores, chamados de subblocos para reduzir o efeito da variabilidade ambiental e aumentar a precisão das comparações entre genótipos.
 

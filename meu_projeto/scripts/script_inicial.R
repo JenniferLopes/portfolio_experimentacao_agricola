@@ -57,7 +57,6 @@ fs::file_create(path("meu_projeto/scripts",
                        "02-tratamento.R",
                        "03-analise.R",
                        "04-analises_quarto.qmd")))
-
 # Etapa 7 - Inserção de cabeçalho no primeiro script ---------------------------
 
 cabecalho <- c(
@@ -71,23 +70,19 @@ cabecalho <- c(
 
 writeLines(cabecalho, con = "meu_projeto/scripts/01-importacao.R")
 
+# Etapa 8 - Exemplo de exportação de dados -------------------------------------
 
-png("meu_projeto/figuras/grafico_salario.png", width = 600, height = 400)
+# Exemplo de exportação para gráfico PNG
+# png("meu_projeto/figuras/grafico_exemplo.png", width = 600, height = 400)
+# plot(...)  # seu gráfico aqui
+# dev.off()
 
-# Exportando para .csv - Exemplo 1
-write.csv(dados_url, "meu_projeto/output/dados_url.csv", row.names = FALSE)
+# Exemplo de exportação para .csv
+# write.csv(dados, "meu_projeto/output/dados.csv", row.names = FALSE)
 
-# Exportação de um único arquivo (Pacote openxlsx)
+# Etapa 9 - Exportação de múltiplas abas em Excel -----------------------------
 
-# Crie a lista dos arquivos a serem exportados
-lista_dados <- list(
-  dados_xl = dados_xl,
-  dados_url = dados_url,
-  dados_texto = dados_texto,
-  dados_csv = dados_csv)
-
-# Função criada (Pacote openxlsx)
-
+# Função para exportar múltiplos data frames em abas separadas
 exporta_abas_excel <- function(lista, caminho_arquivo) {
   library(openxlsx)
   wb <- createWorkbook()
@@ -99,7 +94,11 @@ exporta_abas_excel <- function(lista, caminho_arquivo) {
   saveWorkbook(wb, file = caminho_arquivo, overwrite = TRUE)
 }
 
-# Executar a exportação
-exporta_abas_excel(lista_dados, "meu_projeto/output/arquivo_final.xlsx")
-
+# Exemplo de uso:
+# lista_dados <- list(
+#   aba1 = dados1,
+#   aba2 = dados2,
+#   aba3 = dados3
+# )
+# exporta_abas_excel(lista_dados, "meu_projeto/output/arquivo_final.xlsx")
 
